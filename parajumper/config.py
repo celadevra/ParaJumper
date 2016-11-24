@@ -7,3 +7,8 @@ If the default file is not found, it falls back to ~/.config/parajumper/<any-nam
 
 If still nothing, a default config file is written.
 """
+import os
+
+def check_config():
+    """Check if the config is available using os module."""
+    pass
