@@ -2,4 +2,4 @@
 Tests for config module
 """
 
-from parajumper.config import config
+from parajumper import config
