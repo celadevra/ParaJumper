@@ -4,5 +4,5 @@ all: test
 
 test:
 	@echo Running tests
-	py.test
+	py.test ./parajumper ./tests
 	@echo
