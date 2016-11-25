@@ -11,15 +11,12 @@ import os
 
 DEFAULT_CONFIG_PATH = os.environ['HOME'] + '/.config/parajumper'
 
-CONF_DEFAULT = """
----
+CONF_DEFAULT = """---
 author: Default ParaJumper
 name: My ParaJumper Note
 ---
 This is default configuration for ParaJumper.
-Feel free to change it.
-
-"""
+Feel free to change it. """
 
 def check_config():
     """Check if the config is available using os module."""
