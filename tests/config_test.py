@@ -6,21 +6,28 @@ import os
 import pytest
 from parajumper import config
 
+CONF_FILE = os.environ['HOME'] + '/.config/parajumper/config.yaml'
+
 def test_config_creation(empty_config):
     """test if config can be created when absent"""
-    assert not os.access(os.environ['HOME'] + '/.config/parajumper/config.yaml', os.F_OK)
+    assert not os.access(CONF_FILE, os.F_OK)
     config.check_config()
-    assert os.access(os.environ['HOME'] + '/.config/parajumper/config.yaml', os.R_OK)
+    assert os.access(CONF_FILE, os.R_OK)
 
 def test_config_content(create_config):
     """test if config's content is the expected default content."""
     line_count = 0
     word = ''
-    with open(os.environ['HOME'] + '/.config/parajumper/config.yaml') as f:
+    with open(CONF_FILE) as f:
         for line in f:
             line_count += 1
-            if line_count == 2:
+            if line_count == 1:
                word = line.split()[0] 
-    assert line_count == 6
+    assert line_count == 4
     assert word == 'author:'
-    
+
+def test_read_config(create_config):
+    """test if the config is read correctly."""
+    conf = config.read_config(CONF_FILE)
+    assert conf['author'] == 'Default ParaJumper'
+    assert conf['name'] == 'My ParaJumper Note'
