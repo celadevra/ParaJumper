@@ -28,7 +28,7 @@ def test_config_content():
 def test_read_config():
     """test if the config is read correctly."""
     conf = Config()
-    conf.read_config(CONF_FILE)
+    conf.update_config(CONF_FILE)
     assert conf['author'] == 'Default ParaJumper'
     assert conf['name'] == 'My ParaJumper Note'
 
@@ -36,6 +36,5 @@ def test_read_config():
 def test_add_config():
     """test inserting new items into the config."""
     conf = Config()
-    conf.add_config(CONF_FILE, {'foo': 'bar'})
-    conf = Config.read_config(CONF_FILE)
+    conf.update_items({'foo': 'bar'})
     assert conf['foo'] == 'bar'
