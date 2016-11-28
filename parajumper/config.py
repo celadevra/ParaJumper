@@ -16,16 +16,26 @@ DEFAULT_CONFIG_FILE = os.environ['HOME'] + '/.config/parajumper/config.yaml'
 CONF_DEFAULT = """author: Default ParaJumper
 name: My ParaJumper Note
 # This is default configuration for ParaJumper.
-# Feel free to change it. """
+# See documents for possible options and values. """
 
-class Config(dict):
-    """configurations for ParaJumper"""
+class Config():
+    """configurations for ParaJumper
+    
+    attributes:
+        - options: dictionary of config item and their values.
+    methods:
+        - init
+        - update_config
+        - update_items
+        - remove"""
 
     def __init__(self, f=DEFAULT_CONFIG_FILE):
         """Check if the config is available using os module.
         If the file is present, read the config into a dict,
         if not, create the file with default, and read it into a dict.
-        Return the dict."""
+        Return the dict.
+        
+        f: config file to read."""
         try:
             os.listdir(os.path.dirname(f))
         except OSError:
@@ -38,10 +48,10 @@ class Config(dict):
             conffile.close()
             conffile = open(f)
         finally:
-            document = ""
+            document = ''
             for line in conffile:
                 document += line
-            self = yaml.load(document)
+            self.options = yaml.load(document)
 
     def update_config(self, f=DEFAULT_CONFIG_FILE, df=DEFAULT_CONFIG_FILE):
         """Read config from a file into a dictionary.
@@ -55,9 +65,9 @@ class Config(dict):
             document += line
         cf.close()
         new_conf = yaml.load(document)
-        self.update(new_conf)
+        self.options.update(new_conf)
         cf = open(df, 'w')
-        yaml.dump(self, cf)
+        yaml.dump(self.options, cf)
         cf.close()
 
     def update_items(self, d={}, f=DEFAULT_CONFIG_FILE):
@@ -65,9 +75,9 @@ class Config(dict):
 
         d: a dict recording things to be added/changed in the conf.
         f: file to write config to."""
-        self.update(d)
+        self.options.update(d)
         cf = open(f, 'w+')
-        yaml.dump(self, cf)
+        yaml.dump(self.options, cf)
         cf.close()
 
     def remove(self, k, f=DEFAULT_CONFIG_FILE):
@@ -75,7 +85,7 @@ class Config(dict):
 
         k: key to remove.
         f: file to write config to."""
-        del(self[k])
+        del self.options[k]
         cf = open(f, 'w+')
-        yaml.dump(self, cf)
+        yaml.dump(self.options, cf)
         cf.close()
