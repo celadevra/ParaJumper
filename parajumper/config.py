@@ -67,7 +67,7 @@ class Config():
         new_conf = yaml.load(document)
         self.options.update(new_conf)
         cf = open(df, 'w')
-        yaml.dump(self.options, cf)
+        yaml.dump(self.options, cf, default_flow_style=False)
         cf.close()
 
     def update_items(self, d={}, f=DEFAULT_CONFIG_FILE):
@@ -77,7 +77,7 @@ class Config():
         f: file to write config to."""
         self.options.update(d)
         cf = open(f, 'w+')
-        yaml.dump(self.options, cf)
+        yaml.dump(self.options, cf, default_flow_style=False)
         cf.close()
 
     def remove(self, k, f=DEFAULT_CONFIG_FILE):
@@ -87,5 +87,5 @@ class Config():
         f: file to write config to."""
         del self.options[k]
         cf = open(f, 'w+')
-        yaml.dump(self.options, cf)
+        yaml.dump(self.options, cf, default_flow_style=False)
         cf.close()
