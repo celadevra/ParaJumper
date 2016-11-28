@@ -3,17 +3,17 @@ Tests for config module
 """
 
 import os
-from parajumper import config
+from parajumper.config import Config
 
 CONF_FILE = os.environ['HOME'] + '/.config/parajumper/config.yaml'
 
 def test_config_creation(empty_config):
     """test if config can be created when absent"""
     assert not os.access(CONF_FILE, os.F_OK)
-    config.check_config()
+    Config()
     assert os.access(CONF_FILE, os.R_OK)
 
-def test_config_content(create_config):
+def test_config_content():
     """test if config's content is the expected default content."""
     line_count = 0
     word = ''
@@ -25,15 +25,17 @@ def test_config_content(create_config):
     assert line_count == 4
     assert word == 'author:'
 
-def test_read_config(create_config):
+def test_read_config():
     """test if the config is read correctly."""
-    conf = config.read_config(CONF_FILE)
+    conf = Config()
+    conf.read_config(CONF_FILE)
     assert conf['author'] == 'Default ParaJumper'
     assert conf['name'] == 'My ParaJumper Note'
 
 # next: insert dict into config file as adding new config
-def test_add_config(create_config):
+def test_add_config():
     """test inserting new items into the config."""
-    config.add_config(CONF_FILE, {'foo': 'bar'})
-    conf = config.read_config(CONF_FILE)
+    conf = Config()
+    conf.add_config(CONF_FILE, {'foo': 'bar'})
+    conf = Config.read_config(CONF_FILE)
     assert conf['foo'] == 'bar'
