@@ -2,7 +2,7 @@
 
 import os
 import pytest
-from parajumper import config
+from parajumper.config import Config
 
 @pytest.fixture(scope="module")
 def empty_config():
@@ -12,10 +12,3 @@ def empty_config():
         os.rmdir(os.environ['HOME'] + '/.config/parajumper/')
     except OSError:
         return
-
-@pytest.fixture(scope="module")
-def create_config():
-    """fixture function to create default config."""
-    if not os.access(os.environ['HOME'] + '/.config/parajumper/config.yaml', os.R_OK):
-        config.check_config()
-    return
