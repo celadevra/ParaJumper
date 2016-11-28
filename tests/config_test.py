@@ -10,8 +10,9 @@ CONF_FILE = os.environ['HOME'] + '/.config/parajumper/config.yaml'
 def test_config_creation(empty_config):
     """test if config can be created when absent"""
     assert not os.access(CONF_FILE, os.F_OK)
-    Config()
+    d = Config()
     assert os.access(CONF_FILE, os.R_OK)
+    assert d.options['author'] == 'Default ParaJumper'
 
 def test_config_content():
     """test if config's content is the expected default content."""
@@ -29,18 +30,18 @@ def test_read_config():
     """test if the config is read correctly."""
     conf = Config()
     conf.update_config(CONF_FILE)
-    assert conf['author'] == 'Default ParaJumper'
-    assert conf['name'] == 'My ParaJumper Note'
+    assert conf.options['author'] == 'Default ParaJumper'
+    assert conf.options['name'] == 'My ParaJumper Note'
 
 def test_add_config():
     """test inserting new items into the config."""
     conf = Config()
     conf.update_items({'foo': 'bar'})
-    assert conf['foo'] == 'bar'
+    assert conf.options['foo'] == 'bar'
 
 def test_remove_config():
     """test removing config."""
     conf = Config()
     conf.update_items({'foo': 'bar'})
     conf.remove('foo')
-    assert not 'foo' in conf.keys() 
+    assert not 'foo' in conf.options.keys() 
