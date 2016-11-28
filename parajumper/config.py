@@ -24,10 +24,10 @@ class Config():
     attributes:
         - options: dictionary of config item and their values.
     methods:
-        - init
-        - update_config
-        - update_items
-        - remove"""
+        - __init__
+        - update_config: read additional settings from another file
+        - update_items: change individual settings
+        - remove: delete a key/value pair from config"""
 
     def __init__(self, f=DEFAULT_CONFIG_FILE):
         """Check if the config is available using os module.
