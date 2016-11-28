@@ -69,3 +69,13 @@ class Config(dict):
         cf = open(f, 'w+')
         yaml.dump(self, cf)
         cf.close()
+
+    def remove(self, k, f=DEFAULT_CONFIG_FILE):
+        """remove specified key and its value from conf dict.
+
+        k: key to remove.
+        f: file to write config to."""
+        del(self[k])
+        cf = open(f, 'w+')
+        yaml.dump(self, cf)
+        cf.close()
