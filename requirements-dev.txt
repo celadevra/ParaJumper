@@ -1,3 +1,5 @@
+-e git+git@github.com:celadevra/ParaJumper.git@5bb1812370f2b68ec6a05625e9e93253e82a36e7#egg=parajumper
 py==1.4.31
+pylint==1.6.4
 pytest==3.0.4
-PyYAML==3.12
+ruamel.yaml==0.13.1
