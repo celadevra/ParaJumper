@@ -43,14 +43,29 @@ class Config(dict):
                 document += line
             self = yaml.load(document)
 
-    def read_config(self, f=DEFAULT_CONFIG_FILE):
+    def update_config(self, f=DEFAULT_CONFIG_FILE, df=DEFAULT_CONFIG_FILE):
         """Read config from a file into a dictionary.
         Then merge it with the existing directory.
 
-        f: file name returned by check_config() or supplied in func call."""
+        f: file name returned by check_config() or supplied in func call.
+        df: config file to write to."""
         document = ''
         cf = open(f)
         for line in cf:
             document += line
+        cf.close()
         new_conf = yaml.load(document)
-        return self.update(new_conf)
+        self.update(new_conf)
+        cf = open(df, 'w')
+        yaml.dump(self, cf)
+        cf.close()
+
+    def update_items(self, d={}, f=DEFAULT_CONFIG_FILE):
+        """add/change items in the config.
+
+        d: a dict recording things to be added/changed in the conf.
+        f: file to write config to."""
+        self.update(d)
+        cf = open(f, 'w+')
+        yaml.dump(self, cf)
+        cf.close()
