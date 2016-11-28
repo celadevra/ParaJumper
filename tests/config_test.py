@@ -32,9 +32,15 @@ def test_read_config():
     assert conf['author'] == 'Default ParaJumper'
     assert conf['name'] == 'My ParaJumper Note'
 
-# next: insert dict into config file as adding new config
 def test_add_config():
     """test inserting new items into the config."""
     conf = Config()
     conf.update_items({'foo': 'bar'})
     assert conf['foo'] == 'bar'
+
+def test_remove_config():
+    """test removing config."""
+    conf = Config()
+    conf.update_items({'foo': 'bar'})
+    conf.remove('foo')
+    assert not 'foo' in conf.keys() 
