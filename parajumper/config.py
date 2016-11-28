@@ -3,41 +3,54 @@ Process config file, which is a yaml file.
 
 The default position of the file is at ~/.config/parajumper/config.yaml.
 
-If the default file is not found, it falls back to ~/.config/parajumper/<any-name>.yaml.
+If the default file is not found, it falls back to a filename supplied at the
+init of config class.
 
-If still nothing, a default config file is written.
+If the file does not exist, a default config file is written.
 """
 import os
 import yaml
 
-DEFAULT_CONFIG_PATH = os.environ['HOME'] + '/.config/parajumper'
+DEFAULT_CONFIG_FILE = os.environ['HOME'] + '/.config/parajumper/config.yaml'
 
 CONF_DEFAULT = """author: Default ParaJumper
 name: My ParaJumper Note
 # This is default configuration for ParaJumper.
 # Feel free to change it. """
 
-def check_config():
-    """Check if the config is available using os module."""
-    try:
-        os.listdir(DEFAULT_CONFIG_PATH)
-    except OSError:
-        os.mkdir(DEFAULT_CONFIG_PATH)
-    try:
-        conffile = open(DEFAULT_CONFIG_PATH + '/config.yaml')
-    except OSError:
-        conffile = open(DEFAULT_CONFIG_PATH + '/config.yaml', 'w+')
-        print(CONF_DEFAULT, file=conffile)
-    finally:
-        conffile.close()
-    return conffile.name
+class Config(dict):
+    """configurations for ParaJumper"""
 
-def read_config(f):
-    """Read config into a dictionary.
+    def __init__(self, f=DEFAULT_CONFIG_FILE):
+        """Check if the config is available using os module.
+        If the file is present, read the config into a dict,
+        if not, create the file with default, and read it into a dict.
+        Return the dict."""
+        try:
+            os.listdir(os.path.dirname(f))
+        except OSError:
+            os.mkdir(os.path.dirname(f))
+        try:
+            conffile = open(f)
+        except OSError:
+            conffile = open(f, 'w+')
+            conffile.write(CONF_DEFAULT)
+            conffile.close()
+            conffile = open(f)
+        finally:
+            document = ""
+            for line in conffile:
+                document += line
+            self = yaml.load(document)
 
-    f: file name returned by check_config() or supplied in func call."""
-    document = ''
-    with open(f) as cf:
+    def read_config(self, f=DEFAULT_CONFIG_FILE):
+        """Read config from a file into a dictionary.
+        Then merge it with the existing directory.
+
+        f: file name returned by check_config() or supplied in func call."""
+        document = ''
+        cf = open(f)
         for line in cf:
             document += line
-    return yaml.load(document)
+        new_conf = yaml.load(document)
+        return self.update(new_conf)
