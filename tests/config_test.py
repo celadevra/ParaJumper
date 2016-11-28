@@ -3,7 +3,6 @@ Tests for config module
 """
 
 import os
-import pytest
 from parajumper import config
 
 CONF_FILE = os.environ['HOME'] + '/.config/parajumper/config.yaml'
@@ -22,7 +21,7 @@ def test_config_content(create_config):
         for line in f:
             line_count += 1
             if line_count == 1:
-               word = line.split()[0] 
+                word = line.split()[0]
     assert line_count == 4
     assert word == 'author:'
 
@@ -31,3 +30,10 @@ def test_read_config(create_config):
     conf = config.read_config(CONF_FILE)
     assert conf['author'] == 'Default ParaJumper'
     assert conf['name'] == 'My ParaJumper Note'
+
+# next: insert dict into config file as adding new config
+def test_add_config(create_config):
+    """test inserting new items into the config."""
+    config.add_config(CONF_FILE, {'foo': 'bar'})
+    conf = config.read_config(CONF_FILE)
+    assert conf['foo'] == 'bar'
