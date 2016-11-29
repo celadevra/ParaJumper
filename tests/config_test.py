@@ -18,12 +18,13 @@ def test_config_content():
     """test if config's content is the expected default content."""
     line_count = 0
     word = ''
+    Config()
     with open(CONF_FILE) as conf:
         for line in conf:
             line_count += 1
             if line_count == 1:
                 word = line.split()[0]
-    assert line_count == 4
+    assert line_count == 9
     assert word == 'author:'
 
 def test_read_config():
