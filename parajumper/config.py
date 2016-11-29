@@ -9,6 +9,7 @@ init of config class.
 If the file does not exist, a default config file is written.
 """
 import os
+import ruamel
 from ruamel import yaml
 
 DEFAULT_CONFIG_FILE = os.environ['HOME'] + '/.config/parajumper/config.yaml'
@@ -56,7 +57,7 @@ class Config():
             document = ''
             for line in conffile:
                 document += line
-            self.options = yaml.load(document)
+            self.options = yaml.load(document, Loader=ruamel.yaml.Loader)
 
     def save(self, dest_f=DEFAULT_CONFIG_FILE):
         """Save config to a file.
@@ -82,7 +83,7 @@ class Config():
         for line in conf_file:
             document += line
         conf_file.close()
-        new_conf = yaml.load(document)
+        new_conf = yaml.load(document, Loader=ruamel.yaml.Loader)
         self.options.update(new_conf)
         self.save(write_f)
 
