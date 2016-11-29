@@ -21,7 +21,7 @@ bullets:
     - 'o': event
     - '1': notes
 # This is default configuration for ParaJumper.
-# See documents for possible options and values. 
+# See documents for possible options and values.
 # Recommended way to change config is through CLI."""
 
 class Config():
@@ -66,7 +66,7 @@ class Config():
         dest_f: path to file."""
         comments = """
         # This is default configuration for ParaJumper.
-        # See documents for possible options and values. 
+        # See documents for possible options and values.
         # Recommended way to change config is through CLI."""
         save_to = open(dest_f, 'w+')
         yaml.dump(self.options, save_to, default_flow_style=False)
