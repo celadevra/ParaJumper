@@ -15,8 +15,13 @@ DEFAULT_CONFIG_FILE = os.environ['HOME'] + '/.config/parajumper/config.yaml'
 
 CONF_DEFAULT = """author: Default ParaJumper
 name: My ParaJumper Note
+bullets:
+    - '.': todo
+    - 'o': event
+    - '1': notes
 # This is default configuration for ParaJumper.
-# See documents for possible options and values. """
+# See documents for possible options and values. 
+# Recommended way to change config is through CLI."""
 
 class Config():
     """configurations for ParaJumper
@@ -57,8 +62,13 @@ class Config():
         """Save config to a file.
 
         dest_f: path to file."""
+        comments = """
+        # This is default configuration for ParaJumper.
+        # See documents for possible options and values. 
+        # Recommended way to change config is through CLI."""
         save_to = open(dest_f, 'w+')
         yaml.dump(self.options, save_to, default_flow_style=False)
+        save_to.write(comments)
         save_to.close()
 
     def update_config(self, read_f=DEFAULT_CONFIG_FILE, write_f=DEFAULT_CONFIG_FILE):
