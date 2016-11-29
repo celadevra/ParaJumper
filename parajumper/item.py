@@ -29,6 +29,23 @@ def _get_item_type(bullet):
         bullet_dict[pair[0]] = pair[1]
     return bullet_dict.get(bullet, 'default')
 
+def _process_tags(args):
+    """flatten input, and return a list of all tags, sorted."""
+    result = []
+    for arg in args:
+        if isinstance(arg, list):
+            result += _process_tags(arg)
+        elif isinstance(arg, tuple):
+            result += _process_tags(list(arg))
+        elif isinstance(arg, dict):
+            result += _process_tags(arg.keys())
+        elif isinstance(arg, str):
+            result.append(arg)
+        else:
+            result.append(str(arg))
+    result.sort()
+    return result
+
 class Item():
     """Items: individual notes or snippets.
 
@@ -53,3 +70,8 @@ class Item():
         self.create_date = str(datetime.now())
         self.tags = [] if tags is None else tags
         self.type = _get_item_type(bullet)
+
+    def set_tags(self, *args):
+        """Set the tags of self to the rest of the args."""
+        all_tags = _process_tags(args)
+        self.tags = all_tags
