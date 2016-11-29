@@ -9,7 +9,7 @@ init of config class.
 If the file does not exist, a default config file is written.
 """
 import os
-import yaml
+from ruamel import yaml
 
 DEFAULT_CONFIG_FILE = os.environ['HOME'] + '/.config/parajumper/config.yaml'
 
@@ -20,7 +20,7 @@ name: My ParaJumper Note
 
 class Config():
     """configurations for ParaJumper
-    
+
     attributes:
         - options: dictionary of config item and their values.
     methods:
@@ -34,7 +34,7 @@ class Config():
         If the file is present, read the config into a dict,
         if not, create the file with default, and read it into a dict.
         Return the dict.
-        
+
         f: config file to read."""
         try:
             os.listdir(os.path.dirname(f))
@@ -70,7 +70,7 @@ class Config():
         yaml.dump(self.options, cf, default_flow_style=False)
         cf.close()
 
-    def update_items(self, d={}, f=DEFAULT_CONFIG_FILE):
+    def update_items(self, d, f=DEFAULT_CONFIG_FILE):
         """add/change items in the config.
 
         d: a dict recording things to be added/changed in the conf.
