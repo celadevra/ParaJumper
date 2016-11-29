@@ -53,6 +53,14 @@ class Config():
                 document += line
             self.options = yaml.load(document)
 
+    def save(self, dest_f=DEFAULT_CONFIG_FILE):
+        """Save config to a file.
+
+        dest_f: path to file."""
+        save_to = open(dest_f, 'w+')
+        yaml.dump(self.options, save_to, default_flow_style=False)
+        save_to.close()
+
     def update_config(self, read_f=DEFAULT_CONFIG_FILE, write_f=DEFAULT_CONFIG_FILE):
         """Read config from a file into a dictionary.
         Then merge it with the existing directory.
@@ -66,9 +74,7 @@ class Config():
         conf_file.close()
         new_conf = yaml.load(document)
         self.options.update(new_conf)
-        conf_file = open(write_f, 'w')
-        yaml.dump(self.options, conf_file, default_flow_style=False)
-        conf_file.close()
+        self.save(write_f)
 
     def update_items(self, dict_conf_item, conf_f=DEFAULT_CONFIG_FILE):
         """add/change items in the config.
@@ -76,9 +82,7 @@ class Config():
         dict_conf_item: a dict recording things to be added/changed in the conf.
         conf_f: file to write config to."""
         self.options.update(dict_conf_item)
-        conf_file = open(conf_f, 'w+')
-        yaml.dump(self.options, conf_file, default_flow_style=False)
-        conf_file.close()
+        self.save(conf_f)
 
     def remove(self, k, conf_f=DEFAULT_CONFIG_FILE):
         """remove specified key and its value from conf dict.
@@ -86,6 +90,4 @@ class Config():
         k: key to remove.
         conf_f: file to write config to."""
         del self.options[k]
-        conf_file = open(conf_f, 'w+')
-        yaml.dump(self.options, conf_file, default_flow_style=False)
-        conf_file.close()
+        self.save(conf_f)
