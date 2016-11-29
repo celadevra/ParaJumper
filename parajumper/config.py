@@ -31,6 +31,7 @@ class Config():
         - options: dictionary of config item and their values.
     methods:
         - __init__
+        - save: save config to file, used by methods below.
         - update_config: read additional settings from another file
         - update_items: change individual settings
         - remove: delete a key/value pair from config"""
@@ -102,3 +103,4 @@ class Config():
         conf_f: file to write config to."""
         del self.options[k]
         self.save(conf_f)
+    # TODO: need a method to quickly add new item type (bullets)
