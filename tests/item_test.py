@@ -1,7 +1,7 @@
 """tests for the item module."""
 
-from parajumper.item import Item
 import datetime
+from parajumper.item import Item
 
 def test_create_item():
     """Test creation of item."""
