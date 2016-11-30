@@ -70,8 +70,18 @@ class Item():
         self.create_date = str(datetime.now())
         self.tags = [] if tags is None else tags
         self.type = _get_item_type(bullet)
+        self.update_date = None
 
     def set_tags(self, *args):
         """Set the tags of self to the rest of the args."""
         all_tags = _process_tags(args)
         self.tags = all_tags
+        self.update_date = str(datetime.now())
+
+    def update(self, bullet=None, content=None, tags=None):
+        """Change the calling item and update timestamp."""
+        self.bullet = self.bullet if bullet is None else bullet
+        self.type = _get_item_type(self.bullet)
+        self.content = self.content if content is None else content
+        self.tags = self.tags if tags is None else self.set_tags(tags)
+        self.update_date = str(datetime.now())
