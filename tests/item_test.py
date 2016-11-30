@@ -1,6 +1,7 @@
 """tests for the item module."""
 
 from parajumper.item import Item
+import datetime
 
 def test_create_item():
     """Test creation of item."""
@@ -30,4 +31,18 @@ def test_set_tags():
     assert new_item.tags == ['135', '246']
     new_item.set_tags((50, 21))
     assert new_item.tags == ['21', '50']
-#TODO: test for unicode cases
+
+def test_update_item():
+    """test if items whose attributes are changed have different timestamp."""
+    new_item = Item(bullet='.', content='Bring milk home')
+    new_item.update(content='Bring peanuts home.')
+    assert new_item.content == 'Bring peanuts home.'
+    time1 = datetime.datetime.strptime(new_item.update_date, '%Y-%m-%d %H:%M:%S.%f')
+    time2 = datetime.datetime.strptime(new_item.create_date, '%Y-%m-%d %H:%M:%S.%f')
+    assert time1 - time2 > datetime.timedelta(0)
+
+def test_unicode_content():
+    """Test if content unicode is handled correctly."""
+    new_item = Item(bullet='o', content='你好お元気ですか')
+    new_item.update(content=new_item.content[:2])
+    assert new_item.content == '你好'
