@@ -11,7 +11,6 @@ The contents are Markdown text."""
 
 from datetime import datetime
 from parajumper.config import Config
-from parajumper.db import CLIENT
 
 def _get_item_type(bullet):
     """Obtain/Set item type from config and bullets.
@@ -60,10 +59,13 @@ class Item():
     - rev
 
     methods:
-    - __init__: create item
+    - __init__: create item C
+    - __str__: show item R
+    - update: update item U
 
     helpers:
-    - get_item_type: from bullet
+    - _get_item_type: from bullet
+    - _process_tags
     """
 
     def __init__(self, bullet='o', content=None, tags=None):
@@ -74,33 +76,20 @@ class Item():
         self.tags = [] if tags is None else tags
         self.type = _get_item_type(bullet)
         self.update_date = None
-        self.identity = self.commit()
+        self._id = None
 
-    def set_tags(self, *args):
-        """Set the tags of self to the rest of the args."""
-        all_tags = _process_tags(args)
-        self.tags = all_tags
-        self.update_date = str(datetime.now())
-        self.identity = self.commit()
+    def __str__(self):
+        """Show item in text format."""
+        return "%s %s\ntags: %s\nCreated: %s\nUpdated: %s" % (
+            self.bullet,
+            self.content, self.tags,
+            self.create_date.split()[0],
+            self.update_date.split()[0])
 
     def update(self, bullet=None, content=None, tags=None):
         """Change the calling item and update timestamp."""
         self.bullet = self.bullet if bullet is None else bullet
         self.type = _get_item_type(self.bullet)
         self.content = self.content if content is None else content
-        self.tags = self.tags if tags is None else self.set_tags(tags)
+        self.tags = self.tags if tags is None else _process_tags(tags)
         self.update_date = str(datetime.now())
-        self.identity = self.commit()
-
-    def commit(self):
-        """Save item to database."""
-        conf = Config()
-        db_name = conf.options['database']['db_name']
-        database = CLIENT[db_name]
-        items = database.items
-        try:
-            identity = items.find_one({"_id": self.identity})['_id']
-            items.update({"_id": identity}, self.__dict__)
-        except AttributeError:
-            identity = items.insert_one(self.__dict__).inserted_id
-        return identity
