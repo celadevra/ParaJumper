@@ -2,7 +2,7 @@
 
 import os
 import pytest
-from parajumper.config import Config
+from parajumper.db import CLIENT
 
 @pytest.fixture(scope="module")
 def empty_config():
@@ -12,3 +12,10 @@ def empty_config():
         os.rmdir(os.environ['HOME'] + '/.config/parajumper/')
     except OSError:
         return
+
+@pytest.fixture(scope="module")
+def empty_db():
+    """empty test database."""
+    database = CLIENT.pj
+    items = database.items
+    items.drop()
