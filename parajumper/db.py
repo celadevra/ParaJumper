@@ -10,7 +10,7 @@ if CONF.options['database']['kind'] == 'mongodb':
     DATABASE = CLIENT[CONF.options['database']['db_name']]
     ITEM_T = DATABASE.items
 
-def save_item_mongodb(item, table=ITEM_T, database=DATABASE):
+def save_item_mongodb(item, table=ITEM_T):
     """Save item to database. Return id of the corresponding record.
 
     item: an Item instance.
@@ -23,7 +23,7 @@ def save_item_mongodb(item, table=ITEM_T, database=DATABASE):
         identity = table.insert_one(item.__dict__).inserted_id
     return identity
 
-def load_item_mongodb(record_id, table=ITEM_T, database=DATABASE):
+def load_item_mongodb(record_id, table=ITEM_T):
     """Load item from database. Return an Item object.
 
     record_id: id for finding the item.
@@ -35,25 +35,25 @@ def load_item_mongodb(record_id, table=ITEM_T, database=DATABASE):
         setattr(result, key, record[key])
     return result
 
-def remove_item_mongodb(record_id, table=ITEM_T, database=DATABASE):
+def remove_item_mongodb(record_id, table=ITEM_T):
     """Remove record from database.
-    
+
     record_id: id of the record to remove.
     table: collection the record resides in.
     database: database object."""
     table.remove({"_id": record_id})
 
-def save_item(item, table=ITEM_T, database=DATABASE):
+def save_item(item, table=ITEM_T):
     """Wrapper function for saving item."""
     if CONF.options['database']['kind'] == 'mongodb':
-        return save_item_mongodb(item, table, database)
+        return save_item_mongodb(item, table)
 
-def load_item(record_id, table=ITEM_T, database=DATABASE):
+def load_item(record_id, table=ITEM_T):
     """Wrapper function for loading item."""
     if CONF.options['database']['kind'] == 'mongodb':
-        return load_item_mongodb(record_id, table, database)
+        return load_item_mongodb(record_id, table)
 
-def remove_item(record_id, table=ITEM_T, database=DATABASE):
+def remove_item(record_id, table=ITEM_T):
     """Wrapper function for removing item."""
     if CONF.options['database']['kind'] == 'mongodb':
-        return remove_item_mongodb(record_id, table, database)
+        return remove_item_mongodb(record_id, table)
