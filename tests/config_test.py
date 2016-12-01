@@ -24,7 +24,7 @@ def test_config_content():
             line_count += 1
             if line_count == 1:
                 word = line.split()[0]
-    assert line_count == 17
+    assert line_count == 15
     assert word == 'author:'
 
 def test_read_config():
