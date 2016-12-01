@@ -15,11 +15,11 @@ def save_item_mongodb(item, table=ITEM_T, database=DATABASE):
 
     item: an Item instance.
     table: table/collection to store items.
-    database: name of database."""
+    database: database object."""
     try:
-        identity = table.find_one({"_id": item.identity})['_id']
+        identity = table.find_one({"_id": item._id})['_id']
         table.update({"_id": identity}, item.__dict__)
-    except AttributeError:
+    except TypeError:
         identity = table.insert_one(item.__dict__).inserted_id
     return identity
 
@@ -28,19 +28,32 @@ def load_item_mongodb(record_id, table=ITEM_T, database=DATABASE):
 
     record_id: id for finding the item.
     table: table/collection from which record is read.
-    database: name of database."""
+    database: database object."""
     result = Item()
     record = table.find_one({"_id": record_id})
     for key in record.keys():
         setattr(result, key, record[key])
     return result
 
+def remove_item_mongodb(record_id, table=ITEM_T, database=DATABASE):
+    """Remove record from database.
+    
+    record_id: id of the record to remove.
+    table: collection the record resides in.
+    database: database object."""
+    table.remove({"_id": record_id})
+
 def save_item(item, table=ITEM_T, database=DATABASE):
     """Wrapper function for saving item."""
     if CONF.options['database']['kind'] == 'mongodb':
-        save_item_mongodb(item, table, database)
+        return save_item_mongodb(item, table, database)
 
 def load_item(record_id, table=ITEM_T, database=DATABASE):
-    """Wrapper function for saving item."""
+    """Wrapper function for loading item."""
     if CONF.options['database']['kind'] == 'mongodb':
-        load_item_mongodb(record_id, table, database)
+        return load_item_mongodb(record_id, table, database)
+
+def remove_item(record_id, table=ITEM_T, database=DATABASE):
+    """Wrapper function for removing item."""
+    if CONF.options['database']['kind'] == 'mongodb':
+        return remove_item_mongodb(record_id, table, database)
