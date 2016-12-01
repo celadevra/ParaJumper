@@ -84,7 +84,7 @@ class Item():
             self.bullet,
             self.content, self.tags,
             self.create_date.split()[0],
-            self.update_date.split()[0])
+            self.update_date.split()[0] if self.update_date is not None else 'N/A')
 
     def update(self, bullet=None, content=None, tags=None):
         """Change the calling item and update timestamp."""

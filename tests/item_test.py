@@ -17,6 +17,11 @@ def test_get_item_type(empty_db):
     new_item = Item(bullet='19', content='Test')
     assert new_item.type == 'notes'
 
+def test_show_item():
+    """test item printing."""
+    new_item = Item(content="Content.", bullet="*")
+    assert str(new_item) == "* Content.\ntags: []\nCreated: %s\nUpdated: N/A" % str(datetime.date.today())
+
 def test_update_item(empty_db):
     """test if items whose attributes are changed have different timestamp."""
     new_item = Item(bullet='.', content='Bring milk home')
