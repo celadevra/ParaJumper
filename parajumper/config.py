@@ -21,13 +21,11 @@ bullets:
     - 'o': event
     - '1': notes
 database:
-#    - kind: sqlite
-#    - location: ~/.local/share/parajumper/notes.db
-    - kind: couchdb
-    - location: 'localhost:5984/'
-    - db_name: pj
-    - user: pj
-    - password: pj
+#    kind: sqlite
+#    location: ~/.local/share/parajumper/notes.db
+    kind: mongodb
+    location: 'mongodb://localhost:27017'
+    db_name: 'pj'
 # This is default configuration for ParaJumper.
 # See documents for possible options and values.
 # Recommended way to change config is through CLI."""
