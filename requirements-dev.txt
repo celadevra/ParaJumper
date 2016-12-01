@@ -1,6 +1,6 @@
--e git+git@github.com:celadevra/ParaJumper.git@fc17bd9b7a6b8124d988448a6654d8c77ef62393#egg=parajumper
-CouchDB==1.1
+-e git+git@github.com:celadevra/ParaJumper.git@d0b998238e9a2890296d07fcda5d8157f95d0910#egg=parajumper
 py==1.4.31
 pylint==1.6.4
+pymongo==3.4.0
 pytest==3.0.4
 ruamel.yaml==0.13.1
