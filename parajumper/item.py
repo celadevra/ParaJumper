@@ -11,6 +11,7 @@ The contents are Markdown text."""
 
 from datetime import datetime
 from parajumper.config import Config
+from parajumper.db import CLIENT
 
 def _get_item_type(bullet):
     """Obtain/Set item type from config and bullets.
@@ -55,6 +56,8 @@ class Item():
     - tags
     - type
     - content
+    - identity
+    - rev
 
     methods:
     - __init__: create item
@@ -71,12 +74,14 @@ class Item():
         self.tags = [] if tags is None else tags
         self.type = _get_item_type(bullet)
         self.update_date = None
+        self.identity = self.commit()
 
     def set_tags(self, *args):
         """Set the tags of self to the rest of the args."""
         all_tags = _process_tags(args)
         self.tags = all_tags
         self.update_date = str(datetime.now())
+        self.identity = self.commit()
 
     def update(self, bullet=None, content=None, tags=None):
         """Change the calling item and update timestamp."""
@@ -85,3 +90,17 @@ class Item():
         self.content = self.content if content is None else content
         self.tags = self.tags if tags is None else self.set_tags(tags)
         self.update_date = str(datetime.now())
+        self.identity = self.commit()
+
+    def commit(self):
+        """Save item to database."""
+        conf = Config()
+        db_name = conf.options['database']['db_name']
+        database = CLIENT[db_name]
+        items = database.items
+        try:
+            identity = items.find_one({"_id": self.identity})['_id']
+            items.update({"_id": identity}, self.__dict__)
+        except AttributeError:
+            identity = items.insert_one(self.__dict__).inserted_id
+        return identity
