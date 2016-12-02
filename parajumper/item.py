@@ -13,6 +13,8 @@ import uuid
 from datetime import datetime
 from parajumper.config import Config
 
+ITEMS_DICT = dict()
+
 def _get_item_type(bullet):
     """Obtain/Set item type from config and bullets.
 
@@ -78,6 +80,7 @@ class Item():
         self.type = _get_item_type(bullet)
         self.update_date = None
         self.identity = str(uuid.uuid4())
+        ITEMS_DICT[self.identity] = self
 
     def __str__(self):
         """Show item in text format."""

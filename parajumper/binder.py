@@ -2,6 +2,8 @@
 
 import uuid
 
+BINDERS_DICT = dict()
+
 def _print_members(items):
     if items == [] or items is None:
         return ''
@@ -35,6 +37,7 @@ class Binder():
         self.kind = kind
         self.members = members
         self.identity = str(uuid.uuid4())
+        BINDERS_DICT[self.identity] = self
 
     def __str__(self):
         """Text representation of binder."""
