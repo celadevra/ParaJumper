@@ -19,7 +19,7 @@ def save_item_mongodb(item, table=ITEM_T):
     try:
         identity = table.find_one({"_id": item._id})['_id']
         table.update({"_id": identity}, item.__dict__)
-    except TypeError:
+    except AttributeError:
         identity = table.insert_one(item.__dict__).inserted_id
     return identity
 
