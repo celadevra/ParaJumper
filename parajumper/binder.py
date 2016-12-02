@@ -2,6 +2,15 @@
 
 import parajumper.db as db
 
+def _print_members(items):
+    if items == [] or items is None:
+        return ''
+    res = ''
+    for item in items:
+        res += str(item) + '\n\n'
+    res = res[:-2] # remove trailing \n
+    return res
+
 class Binder():
     """Binder class. A binder has multiple items as its member, and can
     specify the order of these members. A collection can be created, read,
@@ -24,3 +33,7 @@ class Binder():
         self.name = name
         self.kind = kind
         self.members = members
+
+    def __str__(self):
+        """Text representation of binder."""
+        return "%s binder: %s\n%s" % (self.kind, self.name, _print_members(self.members))
