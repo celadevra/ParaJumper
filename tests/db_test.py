@@ -33,4 +33,4 @@ def test_save_binder_and_members(empty_db):
     identity = db.save_binder(binder)
     assert db.ITEM_T.find_one({"content":"I'm in a binder."}) is not None
     assert db.BINDER_T.find_one({"identity":identity}) is not None
-    assert db.ITEM_T.find_one({"content":"Not in a binder."}) is None
+    assert db.ITEM_T.find_one({"content":item2.content}) is None
