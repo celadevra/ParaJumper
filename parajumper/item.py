@@ -9,6 +9,7 @@ They have attributes such as creation date, tags, types and contents.
 
 The contents are Markdown text."""
 
+import uuid
 from datetime import datetime
 from parajumper.config import Config
 
@@ -76,6 +77,7 @@ class Item():
         self.tags = [] if tags is None else tags
         self.type = _get_item_type(bullet)
         self.update_date = None
+        self.identity = str(uuid.uuid4())
 
     def __str__(self):
         """Show item in text format."""
