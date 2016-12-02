@@ -4,7 +4,6 @@ longer time period forms a binder, so do all items with a certain tag, or
 search result from a query."""
 
 from parajumper.binder import Binder
-import parajumper.db as db
 from parajumper.item import Item
 
 def test_create_binder():
