@@ -19,3 +19,5 @@ def empty_db():
     database = CLIENT.pj
     items = database.items
     items.drop()
+    binders = database.binders
+    binders.drop()
