@@ -1,6 +1,6 @@
 """Binders: collection of items."""
 
-import parajumper.db as db
+import uuid
 
 def _print_members(items):
     if items == [] or items is None:
@@ -20,6 +20,7 @@ class Binder():
     - name
     - kind: date, search, tag, adhoc
     - members: a list of items in the binder
+    - identity
 
     methods:
     - __init__ C
@@ -33,21 +34,27 @@ class Binder():
         self.name = name
         self.kind = kind
         self.members = members
+        self.identity = str(uuid.uuid4())
 
     def __str__(self):
         """Text representation of binder."""
         return "%s binder: %s\n%s" % (self.kind, self.name, _print_members(self.members))
 
-    def add_members(self, *args):
-        """add items to binder. Implicitly save item to db if item hasn't 
-        been saved.
+    def add_members(self, *items):
+        """add items to binder.
 
         args: Item objects."""
         if self.members is None:
             self.members = []
-        for arg in args:
-            if hasattr(arg, '_id'):
-                self.members.append(arg._id)
-            else:
-                identity = db.save_item(arg)
-                self.members.append(identity)
+        for item in items:
+            if item.identity not in self.members:
+                self.members.append(item.identity)
+
+    def del_members(self, *ids):
+        """delete items from binder but not from db.
+
+        args: Item ids."""
+        for iden in ids:
+            if iden in self.members:
+                index = self.members.index(iden)
+                self.members = self.members[:index] + self.members[index+1:]

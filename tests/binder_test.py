@@ -24,8 +24,25 @@ def test_add_member():
     binder = Binder()
     item = Item(bullet='1', content='# new member in the binder')
     item2 = Item(bullet='2', content='This is another paragraph.')
-    id_item = db.save_item(item)
-    id_item2 = db.save_item(item2)
-    binder.add_members(id_item, id_item2)
+    binder.add_members(item, item2)
     assert len(binder.members) == 2
-    assert binder.members[1] == item2._id
+    assert binder.members[1] == item2.identity
+
+def test_del_member():
+    """Test for deleting members to binder."""
+    binder = Binder()
+    item = Item(bullet='1', content='# new member in the binder')
+    item2 = Item(bullet='2', content='This is another paragraph.')
+    binder.add_members(item, item2)
+    binder.del_members(item.identity)
+    assert len(binder.members) == 1
+    assert binder.members[0] == item2.identity
+
+def test_members_are_unique():
+    """Test for adding the same member to a binder again, the members
+    list should not grow in this case."""
+    binder = Binder()
+    item = Item(bullet='1', content='# new member in the binder')
+    item2 = Item(bullet='2', content='This is another paragraph.')
+    binder.add_members(item, item2, item)
+    assert len(binder.members) == 2
