@@ -39,10 +39,15 @@ class Binder():
         return "%s binder: %s\n%s" % (self.kind, self.name, _print_members(self.members))
 
     def add_members(self, *args):
-        """add items to binder.
+        """add items to binder. Implicitly save item to db if item hasn't 
+        been saved.
 
         args: Item objects."""
         if self.members is None:
             self.members = []
         for arg in args:
-            self.members.append(arg)
+            if hasattr(arg, '_id'):
+                self.members.append(arg._id)
+            else:
+                identity = db.save_item(arg)
+                self.members.append(identity)

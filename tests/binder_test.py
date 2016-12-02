@@ -24,6 +24,8 @@ def test_add_member():
     binder = Binder()
     item = Item(bullet='1', content='# new member in the binder')
     item2 = Item(bullet='2', content='This is another paragraph.')
-    binder.add_members(item, item2)
+    id_item = db.save_item(item)
+    id_item2 = db.save_item(item2)
+    binder.add_members(id_item, id_item2)
     assert len(binder.members) == 2
-    assert binder.members[1].content == item2.content
+    assert binder.members[1] == item2._id
