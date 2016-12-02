@@ -55,6 +55,4 @@ class Binder():
 
         args: Item ids."""
         for iden in ids:
-            if iden in self.members:
-                index = self.members.index(iden)
-                self.members = self.members[:index] + self.members[index+1:]
+            self.members.remove(iden)

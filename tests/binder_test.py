@@ -34,6 +34,7 @@ def test_del_member():
     item = Item(bullet='1', content='# new member in the binder')
     item2 = Item(bullet='2', content='This is another paragraph.')
     binder.add_members(item, item2)
+    assert binder.members == [item.identity, item2.identity]
     binder.del_members(item.identity)
     assert len(binder.members) == 1
     assert binder.members[0] == item2.identity
