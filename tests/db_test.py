@@ -20,4 +20,4 @@ def test_removing_item(empty_db):
     item = Item(content="Test content", bullet=".", tags=['oper'])
     identity = db.save_item(item)
     db.remove_item(identity)
-    assert db.ITEM_T.find_one({"_id": identity}) is None
+    assert db.ITEM_T.find_one({"identity": identity}) is None

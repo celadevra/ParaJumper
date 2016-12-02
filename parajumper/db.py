@@ -16,12 +16,11 @@ def save_item_mongodb(item, table=ITEM_T):
     item: an Item instance.
     table: table/collection to store items.
     database: database object."""
-    try:
-        identity = table.find_one({"_id": item._id})['_id']
-        table.update({"_id": identity}, item.__dict__)
-    except AttributeError:
-        identity = table.insert_one(item.__dict__).inserted_id
-    return identity
+    if table.find_one({"identity": item.identity}) is not None:
+        table.update({"identity": item.identity}, item.__dict__)
+    else:
+        table.insert_one(item.__dict__)
+    return item.identity
 
 def load_item_mongodb(record_id, table=ITEM_T):
     """Load item from database. Return an Item object.
@@ -30,7 +29,7 @@ def load_item_mongodb(record_id, table=ITEM_T):
     table: table/collection from which record is read.
     database: database object."""
     result = Item()
-    record = table.find_one({"_id": record_id})
+    record = table.find_one({"identity": record_id})
     for key in record.keys():
         setattr(result, key, record[key])
     return result
@@ -41,7 +40,7 @@ def remove_item_mongodb(record_id, table=ITEM_T):
     record_id: id of the record to remove.
     table: collection the record resides in.
     database: database object."""
-    table.remove({"_id": record_id})
+    table.remove({"identity": record_id})
 
 def save_item(item, table=ITEM_T):
     """Wrapper function for saving item."""
