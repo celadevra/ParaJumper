@@ -5,6 +5,7 @@ search result from a query."""
 
 from parajumper.binder import Binder
 import parajumper.db as db
+from parajumper.item import Item
 
 def test_create_binder():
     """Test create method of binder class."""
@@ -17,3 +18,12 @@ def test_show_binder():
     """Test printing binder content."""
     binder = Binder()
     assert str(binder) == '%s binder: %s\n' % (binder.kind, binder.name)
+
+def test_add_member():
+    """Test for adding member(s) to binder."""
+    binder = Binder()
+    item = Item(bullet='1', content='# new member in the binder')
+    item2 = Item(bullet='2', content='This is another paragraph.')
+    binder.add_members(item, item2)
+    assert len(binder.members) == 2
+    assert binder.members[1].content == item2.content
