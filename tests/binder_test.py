@@ -3,7 +3,7 @@ Binders are collections of items. In ParaJumper, all items from a day or a
 longer time period forms a binder, so do all items with a certain tag, or
 search result from a query."""
 
-from parajumper.binder import Binder
+from parajumper.binder import Binder, BINDERS_DICT
 from parajumper.item import Item
 
 def test_create_binder():
@@ -46,3 +46,11 @@ def test_members_are_unique():
     item2 = Item(bullet='2', content='This is another paragraph.')
     binder.add_members(item, item2, item)
     assert len(binder.members) == 2
+
+def test_remove_binder():
+    """Test for removing binder from local env."""
+    binder = Binder()
+    length = len(BINDERS_DICT)
+    assert BINDERS_DICT[binder.identity]
+    binder.delete()
+    assert len(BINDERS_DICT) == length - 1
