@@ -4,6 +4,7 @@ being implemented. Will support SQLite and Amazon DynamoDB in the future."""
 from pymongo import MongoClient
 from parajumper.config import Config
 from parajumper.item import Item, ITEMS_DICT
+from parajumper.binder import BINDERS_DICT
 CONF = Config()
 if CONF.options['database']['kind'] == 'mongodb':
     CLIENT = MongoClient(CONF.options['database']['location'])
@@ -59,6 +60,13 @@ def save_binder_mongodb(binder, table=BINDER_T, item_table=ITEM_T):
         table.insert_one(binder.__dict__)
     return binder.identity
 
+def remove_binder_mongodb(binder_identity, table=BINDER_T):
+    """Remove a binder from database.
+
+    binder_identity: binder to remove."""
+    table.remove({"identity": binder_identity})
+    BINDERS_DICT.pop(binder_identity, None)
+
 def save_item(item, table=ITEM_T):
     """Wrapper function for saving item."""
     if CONF.options['database']['kind'] == 'mongodb':
@@ -78,3 +86,8 @@ def save_binder(binder, table=BINDER_T):
     """Wrapper function for saving binder."""
     if CONF.options['database']['kind'] == 'mongodb':
         return save_binder_mongodb(binder, table)
+
+def remove_binder(binder, table=BINDER_T):
+    """Wrapper function for removing binder."""
+    if CONF.options['database']['kind'] == 'mongodb':
+        return remove_binder_mongodb(binder, table)
