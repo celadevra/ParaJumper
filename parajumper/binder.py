@@ -59,3 +59,8 @@ class Binder():
         args: Item ids."""
         for iden in ids:
             self.members.remove(iden)
+
+    def delete(self):
+        """Delete binder from the local env."""
+        del(BINDERS_DICT[self.identity])
+        del(self)
