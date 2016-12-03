@@ -34,3 +34,14 @@ def test_save_binder_and_members(empty_db):
     assert db.ITEM_T.find_one({"content":"I'm in a binder."}) is not None
     assert db.BINDER_T.find_one({"identity":identity}) is not None
     assert db.ITEM_T.find_one({"content":item2.content}) is None
+
+def test_removing_binder(empty_db):
+    """Test for removing binder from db. Items in the binder will be reserved."""
+    item1 = Item(content="This is test of 12-03")
+    binder = Binder()
+    binder.add_members(item1)
+    item_identity = db.save_item(item1)
+    binder_identity = db.save_binder(binder)
+    db.remove_binder(binder_identity)
+    assert db.BINDER_T.find_one({"identity": binder_identity}) is None
+    assert db.ITEM_T.find_one({"identity": item_identity})
