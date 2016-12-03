@@ -4,7 +4,7 @@ being implemented. Will support SQLite and Amazon DynamoDB in the future."""
 from pymongo import MongoClient
 from parajumper.config import Config
 from parajumper.item import Item, ITEMS_DICT
-from parajumper.binder import BINDERS_DICT
+from parajumper.binder import Binder, BINDERS_DICT
 CONF = Config()
 if CONF.options['database']['kind'] == 'mongodb':
     CLIENT = MongoClient(CONF.options['database']['location'])
@@ -31,10 +31,11 @@ def load_item_mongodb(record_id, table=ITEM_T):
     table: table/collection from which record is read.
     database: database object."""
     result = Item()
+    ITEMS_DICT.pop(result.identity)
     record = table.find_one({"identity": record_id})
     for key in record.keys():
         setattr(result, key, record[key])
-    ITEMS_DICT[result.identity] = result
+    ITEMS_DICT[record['identity']] = result
     return result
 
 def remove_item_mongodb(record_id, table=ITEM_T):
@@ -52,8 +53,9 @@ def save_binder_mongodb(binder, table=BINDER_T, item_table=ITEM_T):
 
     binder: binder to save.
     item_table: collection to save items."""
-    for identity in binder.members:
-        save_item(ITEMS_DICT[identity], item_table)
+    if binder.members is not None:
+        for identity in binder.members:
+            save_item(ITEMS_DICT[identity], item_table)
     if table.find_one({"identity": binder.identity}) is not None:
         table.update({"identity": binder.identity}, binder.__dict__)
     else:
@@ -66,6 +68,18 @@ def remove_binder_mongodb(binder_identity, table=BINDER_T):
     binder_identity: binder to remove."""
     table.remove({"identity": binder_identity})
     BINDERS_DICT.pop(binder_identity, None)
+
+def load_binder_mongodb(record_id, table=BINDER_T):
+    """Load a binder from database.
+
+    record_id: identity of binder to load."""
+    result = Binder()
+    BINDERS_DICT.pop(result.identity)
+    record = table.find_one({"identity": record_id})
+    for key in record.keys():
+        setattr(result, key, record[key])
+    BINDERS_DICT[record['identity']] = result
+    return result
 
 def save_item(item, table=ITEM_T):
     """Wrapper function for saving item."""
@@ -91,3 +105,8 @@ def remove_binder(binder, table=BINDER_T):
     """Wrapper function for removing binder."""
     if CONF.options['database']['kind'] == 'mongodb':
         return remove_binder_mongodb(binder, table)
+
+def load_binder(record_id, table=BINDER_T):
+    """Wrapper function for loading binder from db."""
+    if CONF.options['database']['kind'] == 'mongodb':
+        return load_binder_mongodb(record_id, table)
