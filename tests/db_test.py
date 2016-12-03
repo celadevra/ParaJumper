@@ -1,6 +1,6 @@
 """Tests for database operations."""
-from parajumper.item import Item
-from parajumper.binder import Binder
+from parajumper.item import Item, ITEMS_DICT
+from parajumper.binder import Binder, BINDERS_DICT
 import parajumper.db as db
 
 def test_save_item(empty_db):
@@ -15,6 +15,7 @@ def test_load_item(empty_db):
     identity = db.save_item(item)
     item2 = db.load_item(identity)
     assert item.__dict__ == item2.__dict__
+    assert ITEMS_DICT[identity] == item2
 
 def test_removing_item(empty_db):
     """Test for removing item."""
@@ -45,3 +46,13 @@ def test_removing_binder(empty_db):
     db.remove_binder(binder_identity)
     assert db.BINDER_T.find_one({"identity": binder_identity}) is None
     assert db.ITEM_T.find_one({"identity": item_identity})
+
+def test_loading_binder(empty_db):
+    """Test for loading binder from db."""
+    binder = Binder()
+    identity = db.save_binder(binder)
+    assert BINDERS_DICT[identity] == binder
+    binder.delete()
+    assert not identity in BINDERS_DICT.keys()
+    binder = db.load_binder(identity)
+    assert BINDERS_DICT[identity] == binder
