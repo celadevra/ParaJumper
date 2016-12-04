@@ -45,3 +45,6 @@ def test_unicode_content():
     new_item = Item(bullet='o', content='你好お元気ですか')
     new_item.update(content=new_item.content[:2])
     assert new_item.content == '你好'
+
+#TODO: Test for handling various possibilities of tags input in creating
+# and updating of item
