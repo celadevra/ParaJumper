@@ -79,10 +79,13 @@ class Item():
     helpers:
     - _get_item_type: from bullet
     - _process_tags
+    _ _show_tags
     """
 
     def __init__(self, bullet='o', content=None, tags=None):
         """Init item with the help of get_item_type()."""
+        conf = Config()
+        self.author = conf.options['author']
         self.bullet = bullet
         self.content = "" if content is None else content
         self.create_date = str(datetime.now())
@@ -94,10 +97,10 @@ class Item():
 
     def __str__(self):
         """Show item in text format."""
-        return "%s %s\ntags: %s\nCreated: %s\nUpdated: %s" % (
+        return "%s %s\ntags: %s\nCreated: %s by %s\nUpdated: %s" % (
             self.bullet,
             self.content, _show_tags(self.tags),
-            self.create_date.split()[0],
+            self.create_date.split()[0], self.author,
             self.update_date.split()[0] if self.update_date is not None else 'N/A')
 
     def update(self, bullet=None, content=None, tags=None):
