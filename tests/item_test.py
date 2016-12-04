@@ -20,7 +20,7 @@ def test_get_item_type():
 def test_show_item():
     """test item printing."""
     new_item = Item(content="Content.", bullet="*")
-    assert str(new_item) == "* Content.\ntags: []\nCreated: %s\nUpdated: N/A" % str(datetime.date.today())
+    assert str(new_item) == "* Content.\ntags: []\nCreated: %s by %s\nUpdated: N/A" % (str(datetime.date.today()), new_item.author)
 
 def test_update_item():
     """test if items whose attributes are changed have different timestamp."""
