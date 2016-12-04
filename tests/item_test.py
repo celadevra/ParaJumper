@@ -2,25 +2,32 @@
 
 import datetime
 from parajumper.item import Item
+from parajumper.config import Config
 
 def test_create_item():
     """Test creation of item."""
     new_item = Item(bullet='.', content='# Test new item')
     assert new_item
-    assert new_item.type == 'todo'
+    assert new_item.kind == 'todo'
     assert new_item.content == '# Test new item'
 
-def test_get_item_type():
-    """test if item type can be obtained correctly."""
+def test_get_item_kind():
+    """test if item kind can be obtained correctly."""
     new_item = Item(content='# Test item')
-    assert new_item.type == 'event'
+    assert new_item.kind == 'event'
     new_item = Item(bullet='19', content='Test')
-    assert new_item.type == 'notes'
+    assert new_item.kind == 'notes'
 
 def test_show_item():
     """test item printing."""
     new_item = Item(content="Content.", bullet="*")
     assert str(new_item) == "* Content.\ntags: []\nCreated: %s by %s\nUpdated: N/A" % (str(datetime.date.today()), new_item.author)
+
+def test_show_item_details():
+    """test showing item with all its relevant information."""
+    conf = Config()
+    new_item = Item(bullet='.', content='Milk', tags='grocery', cdate='2016-12-04')
+    assert new_item.show_detail() == ". Milk\ntags: grocery\nCreated: %s by %s\nUpdated: N/A\nkind: %s\nid: %s" % (str(datetime.datetime(2016,12,4,0,0,0,0)) + '.000000', conf.options['author'], new_item.kind, new_item.identity)
 
 def test_update_item():
     """test if items whose attributes are changed have different timestamp."""
