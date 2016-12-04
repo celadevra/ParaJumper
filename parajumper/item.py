@@ -49,6 +49,16 @@ def _process_tags(args):
     result.sort()
     return result
 
+def _show_tags(tags):
+    """Show tags as a series of words/phrases, separated by colons."""
+    res = ""
+    if len(tags) == 0:
+        return "[]"
+    else:
+        for tag in tags:
+            res = res + tag + ':'
+    return res[:-1]
+
 class Item():
     """Items: individual notes or snippets.
 
@@ -86,7 +96,7 @@ class Item():
         """Show item in text format."""
         return "%s %s\ntags: %s\nCreated: %s\nUpdated: %s" % (
             self.bullet,
-            self.content, self.tags,
+            self.content, _show_tags(self.tags),
             self.create_date.split()[0],
             self.update_date.split()[0] if self.update_date is not None else 'N/A')
 
