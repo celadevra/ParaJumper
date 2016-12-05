@@ -11,7 +11,7 @@ The contents are Markdown text."""
 
 import uuid
 import re
-from datetime import datetime, date
+from datetime import datetime
 from parajumper.config import Config
 
 ITEMS_DICT = dict()
