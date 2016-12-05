@@ -46,5 +46,13 @@ def test_unicode_content():
     new_item.update(content=new_item.content[:2])
     assert new_item.content == '你好'
 
-#TODO: Test for handling various possibilities of tags input in creating
-# and updating of item
+def test_processing_tags():
+    """Test various tags input and the resulting item."""
+    new_item1 = Item(tags=['grocery'])
+    new_item2 = Item(tags='produce')
+    new_item3 = Item(tags=['brown', 'white'])
+    new_item4 = Item(tags={'green': '1', 'blue': 2})
+    assert new_item1.tags == ['grocery']
+    assert new_item2.tags == ['produce']
+    assert new_item3.tags == ['brown', 'white']
+    assert new_item4.tags == ['blue', 'green']
