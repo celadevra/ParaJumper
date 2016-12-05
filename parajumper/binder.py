@@ -41,7 +41,7 @@ class Binder():
 
     def __str__(self):
         """Text representation of binder."""
-        return "%s binder: %s\n%s" % (self.kind, self.name, _print_members(self.members))
+        return "%s binder: %s\n%s\n" % (self.kind, self.name, _print_members(self.members))
 
     def add_members(self, *items):
         """add items to binder.
