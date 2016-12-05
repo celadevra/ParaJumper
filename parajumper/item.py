@@ -11,7 +11,7 @@ The contents are Markdown text."""
 
 import uuid
 import re
-from datetime import datetime, date
+from datetime import date
 from parajumper.config import Config
 
 ITEMS_DICT = dict()
@@ -62,20 +62,6 @@ def _show_tags(tags):
             res = res + tag + ':'
     return res[:-1]
 
-def _process_date(cdate):
-    """Store input date in the same format as Python's datetime object's
-    __str__() form."""
-    date_re = re.compile('^[0-9]{,4}-(1[0-2]|0[1-9])-([0-2][0-9]|3[01])$')
-    datetime_re = re.compile('^[0-9]{,4}-(1[0-2]|0[1-9])-([0-2][0-9]|3[01]) ([0-1][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9](.[0-9]{6})*$')
-    if date_re.match(cdate) is not None:
-        cdate += ' 00:00:00'
-    if datetime_re.match(cdate) is None:
-        raise ValueError
-    if re.compile(r'.*\.[0-9]{6}').match(cdate) is not None:
-        return cdate
-    else:
-        return cdate + '.000000'
-
 class Item():
     """Items: individual notes or snippets.
 
@@ -85,18 +71,18 @@ class Item():
     - type
     - content
     - identity
-    - rev
+    - author
 
     methods:
     - __init__: create item C
     - __str__: show item R
     - update: update item U
+    - remove: remove item from dict D
 
     helpers:
     - _get_item_type: from bullet
     - _process_tags
     - _show_tags
-    - _process_date
     """
 
     def __init__(self, bullet='o', content=None, tags=None):
@@ -141,3 +127,11 @@ class Item():
         self.kind = _get_item_kind(self.bullet)
         self.content = self.content if content is None else content
         self.tags = self.tags if tags is None else _process_tags(tags)
+
+    def reschedule(self, date_string):
+        """Change the scheduled date of the item."""
+        date_re = re.compile(r'[0-9]{4}-(0[0-9]|1[0-2])-([0-2][0-9]|3[01])')
+        if date_re.match(date_string) is None:
+            raise ValueError
+        else:
+            self.schedule = date_string
