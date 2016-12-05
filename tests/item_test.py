@@ -1,7 +1,7 @@
 """tests for the item module."""
 
 import datetime
-from parajumper.item import Item
+from parajumper.item import Item, ITEMS_DICT
 from parajumper.config import Config
 
 def test_create_item():
@@ -60,3 +60,11 @@ def test_processing_tags():
     assert new_item2.tags == ['produce']
     assert new_item3.tags == ['brown', 'white']
     assert new_item4.tags == ['blue', 'green']
+
+def test_delete_item():
+    """Test removing item from dict."""
+    new_item = Item()
+    identity = new_item.identity
+    assert ITEMS_DICT[new_item.identity].content == ''
+    new_item.delete()
+    assert identity not in ITEMS_DICT.keys()
