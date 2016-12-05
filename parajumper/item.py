@@ -135,3 +135,8 @@ class Item():
             raise ValueError
         else:
             self.schedule = date_string
+
+    def delete(self):
+        """Remove item from dict."""
+        ITEMS_DICT.pop(self.identity)
+        del self
