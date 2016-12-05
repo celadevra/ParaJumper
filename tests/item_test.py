@@ -37,6 +37,13 @@ def test_update_item():
     new_item.update(tags=['brown', 'white'])
     assert new_item.tags == ['brown', 'white']
 
+def test_reschedule_item():
+    """Test if items can be correctly rescheduled."""
+    new_item = Item(bullet='o', content='Castro died.')
+    assert new_item.schedule == str(datetime.date.today())
+    new_item.reschedule('2016-12-02')
+    assert new_item.schedule == '2016-12-02'
+
 def test_unicode_content():
     """Test if content unicode is handled correctly."""
     new_item = Item(bullet='o', content='你好お元気ですか')
