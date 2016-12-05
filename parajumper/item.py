@@ -11,7 +11,7 @@ The contents are Markdown text."""
 
 import uuid
 import re
-from datetime import datetime
+from datetime import datetime, date
 from parajumper.config import Config
 
 ITEMS_DICT = dict()
@@ -71,7 +71,7 @@ def _process_date(cdate):
         cdate += ' 00:00:00'
     if datetime_re.match(cdate) is None:
         raise ValueError
-    if re.compile('.*\.[0-9]{6}').match(cdate) is not None:
+    if re.compile(r'.*\.[0-9]{6}').match(cdate) is not None:
         return cdate
     else:
         return cdate + '.000000'
@@ -80,8 +80,7 @@ class Item():
     """Items: individual notes or snippets.
 
     attributes:
-    - create_date
-    - update_date
+    - schedule
     - tags
     - type
     - content
@@ -100,32 +99,29 @@ class Item():
     - _process_date
     """
 
-    def __init__(self, bullet='o', content=None, tags=None, cdate=str(datetime.now())):
+    def __init__(self, bullet='o', content=None, tags=None):
         """Init item with the help of get_item_type().
 
         bullet: the leading character before the paragraph, determines
         the type of the entry.
         content: content of the paragraph.
-        tags: tags.
-        date: in the form of YYYY-MM-DD or YYYY-MM-DD HH:mm:ss"""
+        tags: tags."""
         conf = Config()
         self.author = conf.options['author']
         self.bullet = bullet
         self.content = "" if content is None else content
-        self.create_date = _process_date(cdate)
+        self.schedule = date.today()
         self.tags = [] if tags is None else _process_tags(tags)
         self.kind = _get_item_kind(bullet)
-        self.update_date = None
         self.identity = str(uuid.uuid4())
         ITEMS_DICT[self.identity] = self
 
     def __str__(self):
         """Show item in text format."""
-        return "%s %s\ntags: %s\nCreated: %s by %s\nUpdated: %s" % (
+        return "%s %s\ntags: %s\nScheduled: %s by %s\n" % (
             self.bullet,
             self.content, _show_tags(self.tags),
-            self.create_date.split()[0], self.author,
-            self.update_date.split()[0] if self.update_date is not None else 'N/A')
+            self.schedule, self.author)
 
     def show_detail(self):
         """Show item in text format, more detailed than __str__. Mainly
@@ -134,9 +130,8 @@ class Item():
             self.bullet,
             self.content,
             _show_tags(self.tags),
-            self.create_date,
+            self.schedule,
             self.author,
-            self.update_date if self.update_date is not None else 'N/A',
             self.kind,
             self.identity)
 
@@ -146,4 +141,3 @@ class Item():
         self.kind = _get_item_kind(self.bullet)
         self.content = self.content if content is None else content
         self.tags = self.tags if tags is None else _process_tags(tags)
-        self.update_date = str(datetime.now())

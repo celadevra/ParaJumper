@@ -21,13 +21,13 @@ def test_get_item_kind():
 def test_show_item():
     """test item printing."""
     new_item = Item(content="Content.", bullet="*")
-    assert str(new_item) == "* Content.\ntags: []\nCreated: %s by %s\nUpdated: N/A" % (str(datetime.date.today()), new_item.author)
+    assert str(new_item) == "* Content.\ntags: []\nScheduled: %s by %s" % (str(datetime.date.today()), new_item.author)
 
 def test_show_item_details():
     """test showing item with all its relevant information."""
     conf = Config()
-    new_item = Item(bullet='.', content='Milk', tags='grocery', cdate='2016-12-04')
-    assert new_item.show_detail() == ". Milk\ntags: grocery\nCreated: %s by %s\nUpdated: N/A\nkind: %s\nid: %s" % (str(datetime.datetime(2016,12,4,0,0,0,0)) + '.000000', conf.options['author'], new_item.kind, new_item.identity)
+    new_item = Item(bullet='.', content='Milk', tags='grocery')
+    assert new_item.show_detail() == ". Milk\ntags: grocery\nScheduled: %s by %s\nkind: %s\nid: %s" % (str(datetime.datetime(2016,12,4,0,0,0,0)) + '.000000', conf.options['author'], new_item.kind, new_item.identity)
 
 def test_update_item():
     """test if items whose attributes are changed have different timestamp."""
@@ -36,9 +36,6 @@ def test_update_item():
     assert new_item.content == 'Bring peanuts home.'
     new_item.update(tags=['brown', 'white'])
     assert new_item.tags == ['brown', 'white']
-    time1 = datetime.datetime.strptime(new_item.update_date, '%Y-%m-%d %H:%M:%S.%f')
-    time2 = datetime.datetime.strptime(new_item.create_date, '%Y-%m-%d %H:%M:%S.%f')
-    assert time1 - time2 > datetime.timedelta(0)
 
 def test_unicode_content():
     """Test if content unicode is handled correctly."""
