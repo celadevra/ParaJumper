@@ -130,7 +130,7 @@ class Item():
 
     def reschedule(self, date_string):
         """Change the scheduled date of the item."""
-        date_re = re.compile(r'[0-9]{4}-(0[0-9]|1[0-2])-([0-2][0-9]|3[01])')
+        date_re = re.compile(r'^[0-9]{4}-(0[0-9]|1[0-2])-([0-2][0-9]|3[01])$')
         if date_re.match(date_string) is None:
             raise ValueError
         else:
