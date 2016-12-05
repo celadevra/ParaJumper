@@ -110,7 +110,7 @@ class Item():
         self.author = conf.options['author']
         self.bullet = bullet
         self.content = "" if content is None else content
-        self.schedule = date.today()
+        self.schedule = str(date.today())
         self.tags = [] if tags is None else _process_tags(tags)
         self.kind = _get_item_kind(bullet)
         self.identity = str(uuid.uuid4())
@@ -126,7 +126,7 @@ class Item():
     def show_detail(self):
         """Show item in text format, more detailed than __str__. Mainly
         for debugging"""
-        return "%s %s\ntags: %s\nCreated: %s by %s\nUpdated: %s\nkind: %s\nid: %s" % (
+        return "%s %s\ntags: %s\nScheduled: %s by %s\nkind: %s\nid: %s\n" % (
             self.bullet,
             self.content,
             _show_tags(self.tags),
