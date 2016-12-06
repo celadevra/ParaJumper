@@ -1,7 +1,7 @@
 """module that interact with database. Currently interface with MongoDB is
 being implemented. Will support SQLite and Amazon DynamoDB in the future."""
 
-from pymongo import MongoClient
+from pymongo import MongoClient, ASCENDING
 from parajumper.config import Config
 from parajumper.item import Item, ITEMS_DICT
 from parajumper.binder import Binder, BINDERS_DICT
@@ -81,6 +81,17 @@ def load_binder_mongodb(record_id, table=BINDER_T):
     BINDERS_DICT[record['identity']] = result
     return result
 
+def search_by_date_mongodb(date_from, date_to, table=ITEM_T):
+    """Search items that are scheduled in a time range
+    from date_from to date_to. Return a list of item identities."""
+    if date_from > date_to:
+        date_to, date_from = date_from, date_to
+    result = []
+    items = table.find({"schedule": { '$gte': date_from, '$lte': date_to }}, sort=[('schedule', ASCENDING)])
+    for thing in items:
+        result.append(thing['identity'])
+    return result
+
 def save_item(item, table=ITEM_T):
     """Wrapper function for saving item."""
     if CONF.options['database']['kind'] == 'mongodb':
@@ -110,3 +121,8 @@ def load_binder(record_id, table=BINDER_T):
     """Wrapper function for loading binder from db."""
     if CONF.options['database']['kind'] == 'mongodb':
         return load_binder_mongodb(record_id, table)
+
+def search_by_date(date_from, date_to, table=ITEM_T):
+    """Wrapper function for loading items of a certain date from db."""
+    if CONF.options['database']['kind'] == 'mongodb':
+        return search_by_date_mongodb(date_from, date_to, table)
