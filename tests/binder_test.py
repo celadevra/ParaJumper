@@ -56,3 +56,43 @@ def test_remove_binder():
     assert BINDERS_DICT[binder.identity]
     binder.delete()
     assert len(BINDERS_DICT) == length - 1
+
+def test_creating_binder_from_date(empty_db):
+    """Test for creating binders from certain dates."""
+    # 'today' binder, a default case
+    item1 = Item(bullet='1', content='Test 1')
+    item2 = Item(bullet='1', content='Test 2')
+    db.save_item(item1)
+    db.save_item(item2)
+    binder = create_date_binder()
+    assert item1.identity in binder.members
+    assert item2.identity in binder.members
+    # 'a week ago' binder, by setting
+    item3 = Item(bullet='1', content='Test 3')
+    item4 = Item(bullet='1', content='Test 4')
+    item5 = Item(bullet='1', content='Test 5')
+    item3.reschedule(str(date.today() - timedelta(days=6)))
+    item4.reschedule(str(date.today() - timedelta(days=6)))
+    db.save_item(item3)
+    db.save_item(item4)
+    db.save_item(item5)
+    binder = create_date_binder(offset=-6)
+    assert item3.identity in binder.members
+    assert item4.identity in binder.members
+    assert item5.identity in binder.members
+    # 'from to' binder
+    item6 = Item(bullet='1', content='Test 6')
+    item7 = Item(bullet='1', content='Test 7')
+    item6.reschedule(str(date.today() - timedelta(days=200)))
+    item7.reschedule(str(date.today() + timedelta(days=203)))
+    db.save_item(item6)
+    db.save_item(item7)
+    binder = create_date_binder(date_from=str(date.today() - timedelta(days=200)),
+                                date_to=str(date.today() + timedelta(days=203)))
+    assert item1.identity in binder.members
+    assert item2.identity in binder.members
+    assert item3.identity in binder.members
+    assert item4.identity in binder.members
+    assert item5.identity in binder.members
+    assert item6.identity in binder.members
+    assert item7.identity in binder.members
