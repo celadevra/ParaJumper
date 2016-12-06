@@ -1,6 +1,8 @@
 """Binders: collection of items."""
 
 import uuid
+from datetime import date, datetime, timedelta
+import parajumper.db
 
 BINDERS_DICT = dict()
 
@@ -8,6 +10,7 @@ def _print_members(items):
     if items == [] or items is None:
         return ''
     res = ''
+    #TODO: insert index of items as well
     for item in items:
         res += str(item) + '\n\n'
     res = res[:-2] # remove trailing \n
@@ -62,5 +65,26 @@ class Binder():
 
     def delete(self):
         """Delete binder from the local env."""
-        del(BINDERS_DICT[self.identity])
-        del(self)
+        del BINDERS_DICT[self.identity]
+        del self
+
+# outside of binder class
+def create_date_binder(date_from=None, offset=None, date_to=None):
+    """Generate a binder for a certain date or range.
+
+    date_from: start of date range.
+    offset: length and direction of date range, negative ==
+    in the past, unit is day.
+    date_to: if offset is not provided, date_to designates
+    end of time range. Default to date_from."""
+    if date_from is None:
+        date_from = str(date.today())
+    if offset is None:
+        if date_to is None:
+            offset = 0
+            date_to = date_from
+    else:
+        date_to = str((datetime.strptime(date_from, "%Y-%m-%d") + timedelta(days=offset)).date())
+    result = Binder(name=date_from+'~'+date_to, kind='date')
+    result.members = parajumper.db.search_by_date(date_from, date_to)
+    return result
