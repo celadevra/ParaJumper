@@ -92,6 +92,16 @@ def search_by_date_mongodb(date_from, date_to, table=ITEM_T):
         result.append(thing['identity'])
     return result
 
+def search_by_tag_mongodb(tags, table=ITEM_T):
+    """Search items with a certain tag. Return a list of item identities.
+
+    tags: an array of input tags"""
+    result = []
+    items = table.find({"tags": { '$in': tags }}, sort=[('schedule', ASCENDING)])
+    for thing in items:
+        result.append(thing['identity'])
+    return result
+
 def save_item(item, table=ITEM_T):
     """Wrapper function for saving item."""
     if CONF.options['database']['kind'] == 'mongodb':
@@ -126,3 +136,8 @@ def search_by_date(date_from, date_to, table=ITEM_T):
     """Wrapper function for loading items of a certain date from db."""
     if CONF.options['database']['kind'] == 'mongodb':
         return search_by_date_mongodb(date_from, date_to, table)
+
+def search_by_tag(tags, table=ITEM_T):
+    """Wrapper function for loading items of a certain tag from db."""
+    if CONF.options['database']['kind'] == 'mongodb':
+        return search_by_tag_mongodb(tags, table)
