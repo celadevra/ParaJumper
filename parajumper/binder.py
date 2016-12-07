@@ -88,3 +88,12 @@ def create_date_binder(date_from=None, offset=None, date_to=None):
     result = Binder(name=date_from+'~'+date_to, kind='date')
     result.members = parajumper.db.search_by_date(date_from, date_to)
     return result
+
+def create_tag_binder(*tags):
+    """Generate a binder containing only items with certain tags."""
+    tag_array = []
+    for tag in tags:
+        tag_array.append(tag)
+    result = Binder(name='tag: ' + str(tag_array), kind='tag')
+    result.members = parajumper.db.search_by_tag(tag_array)
+    return result
