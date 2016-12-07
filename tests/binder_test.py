@@ -5,7 +5,7 @@ search result from a query."""
 
 from datetime import date, timedelta
 import parajumper.db as db
-from parajumper.binder import Binder, BINDERS_DICT, create_date_binder
+from parajumper.binder import Binder, BINDERS_DICT, create_date_binder, create_tag_binder
 from parajumper.item import Item
 
 def test_create_binder():
@@ -96,3 +96,25 @@ def test_creating_binder_from_date(empty_db):
     assert item5.identity in binder.members
     assert item6.identity in binder.members
     assert item7.identity in binder.members
+
+def test_creating_binder_from_tags(empty_db):
+    """Test creating binder from items with the same tag."""
+    item1 = Item(content = "Test 1", tags=['history'])
+    item2 = Item(content = "Test 2", tags=['history', 'west'])
+    item3 = Item(content = "Test 3", tags=['geography', 'south'])
+    item4 = Item(content = "Test 3", tags=['history', 'south'])
+    db.save_item(item1)
+    db.save_item(item2)
+    db.save_item(item3)
+    db.save_item(item4)
+    binder = create_tag_binder('history')
+    assert item1.identity in binder.members
+    assert item2.identity in binder.members
+    assert item4.identity in binder.members
+    assert item3.identity not in binder.members
+    binder2 = create_tag_binder('south')
+    assert item3.identity in binder2.members
+    assert item4.identity in binder2.members
+    assert item1.identity not in binder2.members
+    binder3 = create_tag_binder('west', 'history')
+    assert item2.identity in binder3.members
