@@ -99,10 +99,10 @@ def test_creating_binder_from_date(empty_db):
 
 def test_creating_binder_from_tags(empty_db):
     """Test creating binder from items with the same tag."""
-    item1 = Item(content = "Test 1", tags=['history'])
-    item2 = Item(content = "Test 2", tags=['history', 'west'])
-    item3 = Item(content = "Test 3", tags=['geography', 'south'])
-    item4 = Item(content = "Test 3", tags=['history', 'south'])
+    item1 = Item(content="Test 1", tags=['history'])
+    item2 = Item(content="Test 2", tags=['history', 'west'])
+    item3 = Item(content="Test 3", tags=['geography', 'south'])
+    item4 = Item(content="Test 3", tags=['history', 'south'])
     db.save_item(item1)
     db.save_item(item2)
     db.save_item(item3)
