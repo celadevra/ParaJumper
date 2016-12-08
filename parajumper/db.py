@@ -1,10 +1,12 @@
 """module that interact with database. Currently interface with MongoDB is
 being implemented. Will support SQLite and Amazon DynamoDB in the future."""
 
-from pymongo import MongoClient, ASCENDING, TEXT
+from pymongo import MongoClient, ASCENDING, DESCENDING
 from parajumper.config import Config
 from parajumper.item import Item, ITEMS_DICT
 from parajumper.binder import Binder, BINDERS_DICT
+from parajumper.indices import gen_index
+
 CONF = Config()
 if CONF.options['database']['kind'] == 'mongodb':
     CLIENT = MongoClient(CONF.options['database']['location'])
@@ -24,7 +26,7 @@ def save_item_mongodb(item, table=ITEM_T):
             table.update_one({"identity": item.identity}, {"$set": {key: item.__dict__[key]}})
     else:
         table.insert_one(item.__dict__)
-    table.create_index([('content', TEXT)], name='content')
+    gen_index(item.identity, item.content)
     return item.identity
 
 def load_item_mongodb(record_id, table=ITEM_T):
@@ -91,7 +93,8 @@ def search_by_date_mongodb(date_from, date_to, table=ITEM_T):
     if date_from > date_to:
         date_to, date_from = date_from, date_to
     result = []
-    items = table.find({"schedule": { '$gte': date_from, '$lte': date_to }}, sort=[('schedule', ASCENDING)])
+    items = table.find({"schedule":{'$gte': date_from, '$lte': date_to}},
+                       sort=[('schedule', ASCENDING)])
     for thing in items:
         result.append(thing['identity'])
     return result
@@ -101,15 +104,16 @@ def search_by_tag_mongodb(tags, table=ITEM_T):
 
     tags: an array of input tags"""
     result = []
-    items = table.find({"tags": { '$in': tags }}, sort=[('schedule', ASCENDING)])
+    items = table.find({"tags":{'$in': tags}}, sort=[('schedule', ASCENDING)])
     for thing in items:
         result.append(thing['identity'])
     return result
 
-def search_mongodb(terms, table=ITEM_T):
+def search_mongodb(terms, table=INDEX_T):
     """Search items with certain term. Return a list of item identities."""
     result = []
-    items = table.find({ "$text": { "$search": terms }})
+    items = table.find({"words":{"$in": terms}},
+                       sort=[('words', DESCENDING)])
     for thing in items:
         result.append(thing['identity'])
     return result
@@ -154,7 +158,7 @@ def search_by_tag(tags, table=ITEM_T):
     if CONF.options['database']['kind'] == 'mongodb':
         return search_by_tag_mongodb(tags, table)
 
-def search(terms, table=ITEM_T):
+def search(terms, table=INDEX_T):
     """Wrapper function for searching terms in item content."""
     if CONF.options['database']['kind'] == 'mongodb':
         return search_mongodb(terms, table)
