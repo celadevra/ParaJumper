@@ -100,9 +100,9 @@ def create_tag_binder(*tags):
 
 def create_search_binder(*terms):
     """Generate a binder with items containing search terms."""
-    search_string = ''
+    search_string = []
     for term in terms:
-        search_string += term
-    result = Binder(name='search: ' + search_string, kind='search')
+        search_string.append(term.lower())
+    result = Binder(name='search: ' + str(search_string), kind='search')
     result.members = parajumper.db.search(search_string)
     return result
