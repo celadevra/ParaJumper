@@ -5,7 +5,7 @@ search result from a query."""
 
 from datetime import date, timedelta
 import parajumper.db as db
-from parajumper.binder import Binder, BINDERS_DICT, create_date_binder, create_tag_binder
+from parajumper.binder import Binder, BINDERS_DICT, create_date_binder, create_tag_binder, create_search_binder
 from parajumper.item import Item
 
 def test_create_binder():
@@ -118,3 +118,32 @@ def test_creating_binder_from_tags(empty_db):
     assert item1.identity not in binder2.members
     binder3 = create_tag_binder('west', 'history')
     assert item2.identity in binder3.members
+
+def test_creating_search_binder(empty_db):
+    """Test creating binder from search term."""
+    #item1 = Item(content="竹外桃花三两枝")
+    #item2 = Item(content="春江水暖鸭先知")
+    #item3 = Item(content="蒌蒿满地芦芽短")
+    #item4 = Item(content="正是河豚欲上时")
+    #db.save_item(item1)
+    #db.save_item(item2)
+    #db.save_item(item3)
+    #db.save_item(item4)
+    #binder = create_search_binder("桃花")
+    #assert item1.identity in binder.members
+    #assert item2.identity not in binder.members
+    #assert len(binder.members) == 1
+    item5 = Item(content="# Epigraph\nProgramming is the activity of...")
+    item6 = Item(content="# Epigraph\nProgramming is not the activity of...")
+    item7 = Item(content="# Epigraph\nStatistics is the activity of ...")
+    item8 = Item(content="# Epigraph\nStatistics is not the activity of ...")
+    db.save_item(item5)
+    db.save_item(item6)
+    db.save_item(item7)
+    db.save_item(item8)
+    binder2 = create_search_binder('activity')
+    assert len(binder2.members) == 4
+    binder3 = create_search_binder('programming')
+    assert len(binder3.members) == 2
+    assert item5.identity in binder3.members
+    assert item6.identity in binder3.members
