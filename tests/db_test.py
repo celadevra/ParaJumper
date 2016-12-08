@@ -56,3 +56,10 @@ def test_loading_binder(empty_db):
     assert not identity in BINDERS_DICT.keys()
     binder = db.load_binder(identity)
     assert BINDERS_DICT[identity] == binder
+
+def test_indices_order(empty_db):
+    """Test if indices are ordered by frequency."""
+    item1 = Item(content="Do you call this this and that also this?")
+    db.save_item(item1)
+    wordlist = db.INDEX_T.find_one({"identity":item1.identity})['words']
+    assert wordlist[0] == 'this'
