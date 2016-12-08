@@ -11,6 +11,7 @@ if CONF.options['database']['kind'] == 'mongodb':
     DATABASE = CLIENT[CONF.options['database']['db_name']]
     ITEM_T = DATABASE.items
     BINDER_T = DATABASE.binders
+    INDEX_T = DATABASE.indices
 
 def save_item_mongodb(item, table=ITEM_T):
     """Save item to database. Return id of the corresponding record.
@@ -19,7 +20,8 @@ def save_item_mongodb(item, table=ITEM_T):
     table: table/collection to store items.
     database: database object."""
     if table.find_one({"identity": item.identity}) is not None:
-        table.update({"identity": item.identity}, item.__dict__)
+        for key in item.__dict__:
+            table.update_one({"identity": item.identity}, {"$set": {key: item.__dict__[key]}})
     else:
         table.insert_one(item.__dict__)
     table.create_index([('content', TEXT)], name='content')
@@ -58,7 +60,8 @@ def save_binder_mongodb(binder, table=BINDER_T, item_table=ITEM_T):
         for identity in binder.members:
             save_item(ITEMS_DICT[identity], item_table)
     if table.find_one({"identity": binder.identity}) is not None:
-        table.update({"identity": binder.identity}, binder.__dict__)
+        for key in binder.__dict__:
+            table.update_one({"identity": binder.identity}, {"$set": {key: binder.__dict__[key]}})
     else:
         table.insert_one(binder.__dict__)
     return binder.identity
