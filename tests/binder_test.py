@@ -147,3 +147,16 @@ def test_creating_search_binder(empty_db):
     assert len(binder3.members) == 2
     assert item5.identity in binder3.members
     assert item6.identity in binder3.members
+
+def test_sort_search_result_by_rank(empty_db):
+    """Test if search result with more 'hits' is in front."""
+    item1 = Item(content="foo foo foo foo woof woof bar")
+    item2 = Item(content="bar bar bar bar bar woof woof foo foo foo")
+    db.save_item(item1)
+    db.save_item(item2)
+    binder = create_search_binder("foo")
+    assert binder.members[0] == item1.identity
+    binder = create_search_binder("bar")
+    assert binder.members[0] == item2.identity
+    binder = create_search_binder('foo', 'bar')
+    assert binder.members[0] == item2.identity
