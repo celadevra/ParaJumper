@@ -1,7 +1,7 @@
 """module that interact with database. Currently interface with MongoDB is
 being implemented. Will support SQLite and Amazon DynamoDB in the future."""
 
-from pymongo import MongoClient, ASCENDING
+from pymongo import MongoClient, ASCENDING, TEXT
 from parajumper.config import Config
 from parajumper.item import Item, ITEMS_DICT
 from parajumper.binder import Binder, BINDERS_DICT
@@ -22,6 +22,7 @@ def save_item_mongodb(item, table=ITEM_T):
         table.update({"identity": item.identity}, item.__dict__)
     else:
         table.insert_one(item.__dict__)
+    table.create_index([('content', TEXT)], name='content')
     return item.identity
 
 def load_item_mongodb(record_id, table=ITEM_T):
@@ -102,6 +103,14 @@ def search_by_tag_mongodb(tags, table=ITEM_T):
         result.append(thing['identity'])
     return result
 
+def search_mongodb(terms, table=ITEM_T):
+    """Search items with certain term. Return a list of item identities."""
+    result = []
+    items = table.find({ "$text": { "$search": terms }})
+    for thing in items:
+        result.append(thing['identity'])
+    return result
+
 def save_item(item, table=ITEM_T):
     """Wrapper function for saving item."""
     if CONF.options['database']['kind'] == 'mongodb':
@@ -141,3 +150,8 @@ def search_by_tag(tags, table=ITEM_T):
     """Wrapper function for loading items of a certain tag from db."""
     if CONF.options['database']['kind'] == 'mongodb':
         return search_by_tag_mongodb(tags, table)
+
+def search(terms, table=ITEM_T):
+    """Wrapper function for searching terms in item content."""
+    if CONF.options['database']['kind'] == 'mongodb':
+        return search_mongodb(terms, table)
