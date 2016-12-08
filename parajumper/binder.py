@@ -104,5 +104,18 @@ def create_search_binder(*terms):
     for term in terms:
         search_string.append(term.lower())
     result = Binder(name='search: ' + str(search_string), kind='search')
-    result.members = parajumper.db.search(search_string)
+    found = parajumper.db.search(search_string)
+    identity_rank = []
+    for identity in found:
+        rank = 0
+        for term in terms:
+            try:
+                rank += parajumper.db.INDEX_T.find_one({"identity": identity})['words'].index(term)
+            except ValueError:
+                rank += 0
+        identity_rank.append((rank, identity))
+    identity_rank.sort()
+    result.members = []
+    for _, identity in identity_rank:
+        result.members.append(identity)
     return result
