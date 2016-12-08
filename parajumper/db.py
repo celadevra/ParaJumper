@@ -112,8 +112,7 @@ def search_by_tag_mongodb(tags, table=ITEM_T):
 def search_mongodb(terms, table=INDEX_T):
     """Search items with certain term. Return a list of item identities."""
     result = []
-    items = table.find({"words":{"$in": terms}},
-                       sort=[('words', DESCENDING)])
+    items = table.find({"words":{"$in": terms}})
     for thing in items:
         result.append(thing['identity'])
     return result
