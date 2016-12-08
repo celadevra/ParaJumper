@@ -21,3 +21,5 @@ def empty_db():
     items.drop()
     binders = database.binders
     binders.drop()
+    indices = database.indices
+    indices.drop()
