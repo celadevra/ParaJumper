@@ -2,6 +2,7 @@
 
 import uuid
 from datetime import date, datetime, timedelta
+from copy import copy
 from random import shuffle
 import parajumper.db
 
@@ -33,6 +34,7 @@ class Binder():
     - __str__ R
     - add_members U
     - remove_members U
+    - reorder U
     - rename U
     - delete D"""
 
@@ -77,6 +79,19 @@ class Binder():
         else:
             self.kind = 'adhoc'
             self.name = new_name
+
+    def reorder(self, from_index, to_index):
+        """Reorder items in a binder by moving one item from
+        from_index to to_index."""
+        old_order = list(range(len(self.members)))
+        new_order = copy(old_order)
+        if isinstance(from_index, int):
+            if isinstance(to_index, int):
+                del new_order[from_index]
+                new_order.insert(to_index, from_index)
+                self.members = [self.members[i] for i in new_order]
+            else:
+                raise ValueError
 
     def delete(self):
         """Delete binder from the local env."""
