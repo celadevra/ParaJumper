@@ -37,8 +37,9 @@ def load_item_mongodb(record_id, table=ITEM_T):
     result = Item()
     ITEMS_DICT.pop(result.identity)
     record = table.find_one({"identity": record_id})
-    for key in record.keys():
-        setattr(result, key, record[key])
+    for key in record:
+        if key != '_id':
+            setattr(result, key, record[key])
     ITEMS_DICT[record['identity']] = result
     return result
 
