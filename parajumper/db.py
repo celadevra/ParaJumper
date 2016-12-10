@@ -21,11 +21,10 @@ def save_item_mongodb(item, table=ITEM_T):
     item: an Item instance.
     table: table/collection to store items.
     database: database object."""
-    if table.find_one({"identity": item.identity}) is not None:
-        for key in item.__dict__:
-            table.update_one({"identity": item.identity}, {"$set": {key: item.__dict__[key]}})
-    else:
-        table.insert_one(item.__dict__)
+    for key in item.__dict__:
+        table.update_one({"identity": item.identity},
+                         {"$set": {key: item.__dict__[key]}},
+                         upsert=True)
     gen_index(item.identity, item.content)
     return item.identity
 
