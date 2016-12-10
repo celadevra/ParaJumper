@@ -160,3 +160,14 @@ def test_sort_search_result_by_rank(empty_db):
     assert binder.members[0] == item2.identity
     binder = create_search_binder('foo', 'bar')
     assert binder.members[0] == item2.identity
+
+def test_binder_rename():
+    """Test renaming binder"""
+    binder = Binder(kind='adhoc')
+    assert binder.name == 'binder'
+    binder.rename('important matters')
+    assert binder.name == 'important matters'
+    binder2 = create_date_binder()
+    binder2.rename('some thoughts')
+    assert binder2.name == 'some thoughts'
+    assert binder2.kind == 'adhoc'
