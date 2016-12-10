@@ -83,15 +83,10 @@ class Binder():
     def reorder(self, from_index, to_index):
         """Reorder items in a binder by moving one item from
         from_index to to_index."""
-        old_order = list(range(len(self.members)))
-        new_order = copy(old_order)
-        if isinstance(from_index, int):
-            if isinstance(to_index, int):
-                del new_order[from_index]
-                new_order.insert(to_index, from_index)
-                self.members = [self.members[i] for i in new_order]
-            else:
-                raise ValueError
+        order = list(range(len(self.members)))
+        del order[from_index]
+        order.insert(to_index, from_index)
+        self.members = [self.members[i] for i in order]
 
     def delete(self):
         """Delete binder from the local env."""
