@@ -5,6 +5,7 @@ search result from a query."""
 
 from datetime import date, timedelta
 import parajumper.db as db
+from copy import copy
 from parajumper.binder import Binder, BINDERS_DICT, create_date_binder, create_tag_binder, create_search_binder
 from parajumper.item import Item
 
@@ -171,3 +172,15 @@ def test_binder_rename():
     binder2.rename('some thoughts')
     assert binder2.name == 'some thoughts'
     assert binder2.kind == 'adhoc'
+
+def test_binder_shuffle():
+    """Test shuffling items in a binder."""
+    item1 = Item()
+    item2 = Item()
+    item3 = Item()
+    assert item1.identity != item2.identity
+    binder = Binder()
+    binder.add_members(item1, item2, item3)
+    origin_order = copy(binder.members)
+    binder.shuffle_members()
+    assert origin_order != binder.members
