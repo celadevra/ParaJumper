@@ -4,16 +4,10 @@ import parajumper.db
 
 def _get_freq(word_list):
     """Get number of occurrence of word in a list."""
-    counts = dict()
-    for word in word_list:
-        if word in counts:
-            counts[word] += 1
-        else:
-            counts[word] = 1
-
+    word_set = set(word_list)
     results = []
-    for word in counts:
-        results.append((counts[word], word))
+    for word in word_set:
+        results.append((word_list.count(word), word))
     results.sort()
     return results
 
