@@ -62,4 +62,4 @@ def test_indices_order(empty_db):
     item1 = Item(content="Do you call this this and that also this?")
     db.save_item(item1)
     wordlist = db.INDEX_T.find_one({"identity":item1.identity})['words']
-    assert wordlist[0] == 'this'
+    assert wordlist[-1] == 'this'

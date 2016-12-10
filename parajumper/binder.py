@@ -114,7 +114,7 @@ def create_search_binder(*terms):
             except ValueError:
                 rank += 0
         identity_rank.append((rank, identity))
-    identity_rank.sort()
+    identity_rank.sort(reverse=True)
     result.members = []
     for _, identity in identity_rank:
         result.members.append(identity)
