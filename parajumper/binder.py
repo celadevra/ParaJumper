@@ -2,7 +2,6 @@
 
 import uuid
 from datetime import date, datetime, timedelta
-from copy import copy
 from random import shuffle
 import parajumper.db
 
