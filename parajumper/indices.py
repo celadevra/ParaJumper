@@ -19,7 +19,7 @@ def _get_freq(word_list):
 
 def gen_index(identity, text):
     """Generate a content index for item with id = identity."""
-    words = [w for w in jieba.lcut_for_search(text.lower()) if w != " "]
+    words = [w for w in jieba.cut_for_search(text.lower()) if w != " "]
     word_freq = _get_freq(words)
     result = []
     for (_, word) in word_freq:
