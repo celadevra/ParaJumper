@@ -2,6 +2,7 @@
 
 import uuid
 from datetime import date, datetime, timedelta
+from random import shuffle
 import parajumper.db
 
 BINDERS_DICT = dict()
@@ -63,6 +64,10 @@ class Binder():
         args: Item ids."""
         for iden in ids:
             self.members.remove(iden)
+
+    def shuffle_members(self):
+        """shuffle order of members"""
+        shuffle(self.members)
 
     def rename(self, new_name):
         """Rename binder. If binder is adhoc, just rename. Else, set the
