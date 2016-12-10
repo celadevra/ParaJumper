@@ -32,6 +32,7 @@ class Binder():
     - __str__ R
     - add_members U
     - remove_members U
+    - rename U
     - delete D"""
 
     def __init__(self, name='binder', kind='adhoc', members=None):
@@ -62,6 +63,15 @@ class Binder():
         args: Item ids."""
         for iden in ids:
             self.members.remove(iden)
+
+    def rename(self, new_name):
+        """Rename binder. If binder is adhoc, just rename. Else, set the
+        binder kind to adhoc then rename."""
+        if self.kind == 'adhoc':
+            self.name = new_name
+        else:
+            self.kind = 'adhoc'
+            self.name = new_name
 
     def delete(self):
         """Delete binder from the local env."""
