@@ -5,7 +5,6 @@ search result from a query."""
 
 from datetime import date, timedelta
 import parajumper.db as db
-from copy import copy
 from parajumper.binder import Binder, BINDERS_DICT, create_date_binder, create_tag_binder, create_search_binder
 from parajumper.item import Item
 
@@ -178,9 +177,24 @@ def test_binder_shuffle():
     item1 = Item()
     item2 = Item()
     item3 = Item()
+    item4 = Item()
     assert item1.identity != item2.identity
     binder = Binder()
-    binder.add_members(item1, item2, item3)
-    origin_order = copy(binder.members)
+    binder.add_members(item1, item2, item3, item4)
+    origin_order = [item1.identity, item2.identity, item3.identity, item4.identity]
     binder.shuffle_members()
     assert origin_order != binder.members
+
+def test_reorder_element():
+    """Test reordering single element."""
+    binder = Binder()
+    item1 = Item()
+    item2 = Item()
+    item3 = Item()
+    item4 = Item()
+    binder.add_members(item1, item2, item3, item4)
+    assert binder.members[1] == item2.identity
+    binder.reorder(1, 2) # 1,3,2,4
+    assert binder.members[1] == item3.identity
+    binder.reorder(2, 1) # 1,2,3,4
+    assert binder.members[1] == item2.identity
