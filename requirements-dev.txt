@@ -1,6 +1,19 @@
+args==0.1.0
+astroid==1.4.8
 cement==2.10.2
+clint==0.5.1
+greenlet==0.4.10
+isort==4.2.5
 jieba==0.38
+lazy-object-proxy==1.2.2
+mccabe==0.5.2
+msgpack-python==0.4.8
+neovim==0.1.11
+-e git+git@github.com:celadevra/ParaJumper.git@591588d3244dabce77582693068c9a6467876002#egg=parajumper
+py==1.4.31
 pylint==1.6.4
 pymongo==3.4.0
 pytest==3.0.4
 ruamel.yaml==0.13.1
+six==1.10.0
+wrapt==1.10.8
