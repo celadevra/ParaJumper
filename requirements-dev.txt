@@ -1,5 +1,5 @@
--e git+git@github.com:celadevra/ParaJumper.git@d0b998238e9a2890296d07fcda5d8157f95d0910#egg=parajumper
-py==1.4.31
+cement==2.10.2
+jieba==0.38
 pylint==1.6.4
 pymongo==3.4.0
 pytest==3.0.4
