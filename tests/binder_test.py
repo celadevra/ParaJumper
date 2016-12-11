@@ -5,7 +5,11 @@ search result from a query."""
 
 from datetime import date, timedelta
 import parajumper.db as db
-from parajumper.binder import Binder, BINDERS_DICT, create_date_binder, create_tag_binder, create_search_binder
+from parajumper.binder import (
+    Binder, BINDERS_DICT,
+    create_date_binder,
+    create_tag_binder,
+    create_search_binder)
 from parajumper.item import Item
 
 def test_create_binder():
