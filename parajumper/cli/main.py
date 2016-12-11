@@ -4,7 +4,9 @@ from cement.core.foundation import CementApp
 
 class PJApp(CementApp):
     """Cement app class for PJ"""
-    label = 'pj'
+    class Meta:
+        """Metadata for PJApp class"""
+        label = 'pj'
 
 APP = PJApp()
 
