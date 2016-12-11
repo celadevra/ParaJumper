@@ -6,4 +6,15 @@ import parajumper
 
 setup(
     name="parajumper",
-    version=parajumper.__version__)
+    version=parajumper.__version__,
+    entry_points={
+        'console_scripts': ['parajumper.cli.main']},
+    install_requires=[
+        # dev reqs
+        # 'pylint',
+        # 'pytest',
+        'cement == 2.10',
+        'clint == 0.5',
+        'jieba',
+        'pymongo == 3.4',
+        'ruamel.yaml'])
