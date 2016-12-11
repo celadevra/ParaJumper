@@ -11,9 +11,9 @@ def _print_members(items):
     if items == [] or items is None:
         return ''
     res = ''
-    #TODO: insert index of items as well
+    index = 0
     for item in items:
-        res += str(item) + '\n\n'
+        res += '[' + index + ']\n' + str(item) + '\n\n'
     res = res[:-2] # remove trailing \n
     return res
 
