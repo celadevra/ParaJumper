@@ -1,7 +1,7 @@
 """module that interact with database. Currently interface with MongoDB is
 being implemented. Will support SQLite and Amazon DynamoDB in the future."""
 
-from pymongo import MongoClient, ASCENDING, DESCENDING
+from pymongo import MongoClient, ASCENDING
 from parajumper.config import Config
 from parajumper.item import Item, ITEMS_DICT
 from parajumper.binder import Binder, BINDERS_DICT
