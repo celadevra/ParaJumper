@@ -8,6 +8,7 @@ setup(
     name="parajumper",
     description="Command line journal/note-taking tool.",
     version=parajumper.__version__,
+    packages=['parajumper'],
     entry_points={
         'console_scripts': ['parajumper = parajumper.cli.main:main']},
     install_requires=[
