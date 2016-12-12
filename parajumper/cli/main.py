@@ -1,6 +1,6 @@
 """ParaJumper main application entry point."""
 from clint.arguments import Args
-from clint.textui import puts, indent, colored
+from clint.textui import puts, colored
 import parajumper.cli.help as printhelp
 
 def main():
