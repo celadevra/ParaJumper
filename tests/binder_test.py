@@ -12,7 +12,7 @@ from parajumper.binder import (
     create_search_binder)
 from parajumper.item import Item
 
-def test_create_binder():
+def test_create_binder(db_config):
     """Test create method of binder class."""
     binder = Binder()
     assert binder.members is None
@@ -202,3 +202,7 @@ def test_reorder_element():
     assert binder.members[1] == item3.identity
     binder.reorder(2, 1) # 1,2,3,4
     assert binder.members[1] == item2.identity
+
+def test_teardown(db_teardown):
+    """Restore db settings, the last test in the module."""
+    assert True

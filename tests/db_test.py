@@ -3,7 +3,7 @@ from parajumper.item import Item, ITEMS_DICT
 from parajumper.binder import Binder, BINDERS_DICT
 import parajumper.db as db
 
-def test_save_item(empty_db):
+def test_save_item(db_config, empty_db):
     """Test for saving item."""
     item = Item(content="Test content", bullet=".", tags=['oper'])
     db.save_item(item)
@@ -63,3 +63,7 @@ def test_indices_order(empty_db):
     db.save_item(item1)
     wordlist = db.INDEX_T.find_one({"identity":item1.identity})['words']
     assert wordlist[-1] == 'this'
+
+def test_teardown(db_teardown):
+    """Restore db settings, the last test in the module."""
+    assert True
