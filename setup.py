@@ -15,7 +15,6 @@ setup(
         # dev reqs
         # 'pylint',
         # 'pytest',
-        'cement >= 2.10',
         'clint >= 0.5',
         'jieba',
         'pymongo >= 3.4',
