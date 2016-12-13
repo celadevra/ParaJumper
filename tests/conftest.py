@@ -14,8 +14,8 @@ def empty_config():
     except OSError:
         return
 
-@pytest.fixture(scope='module')
-def db_config():
+@pytest.fixture(scope='module', autouse=True)
+def set_up():
     """Make db-related tests use test database."""
     conf = Config()
     conf.update_items({'database': {'db_name': 'test',
@@ -23,6 +23,9 @@ def db_config():
                                     'location': 'mongodb://localhost:27017'}})
     print("Setting db to test")
     yield conf
+    conf.update_items({'database': {'db_name': 'pj',
+                                    'kind': 'mongodb',
+                                    'location': 'mongodb://localhost:27017'}})
 
 @pytest.fixture()
 def db_teardown():
