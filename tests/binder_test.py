@@ -5,12 +5,9 @@ search result from a query."""
 
 from datetime import date, timedelta
 import parajumper.db as db
-from parajumper.binder import (
-    Binder, BINDERS_DICT,
-    create_date_binder,
-    create_tag_binder,
-    create_search_binder)
+from parajumper.binder import Binder, BINDERS_DICT
 from parajumper.item import Item
+from parajumper.config import DBConfig
 
 def test_create_binder():
     """Test create method of binder class."""
@@ -64,11 +61,12 @@ def test_remove_binder():
 def test_creating_binder_from_date(empty_db):
     """Test for creating binders from certain dates."""
     # 'today' binder, a default case
+    conf = DBConfig()
     item1 = Item(bullet='1', content='Test 1')
     item2 = Item(bullet='1', content='Test 2')
     db.save_item(item1)
     db.save_item(item2)
-    binder = create_date_binder()
+    binder = db.create_date_binder()
     assert item1.identity in binder.members
     assert item2.identity in binder.members
     # 'a week ago' binder, by setting
@@ -80,7 +78,7 @@ def test_creating_binder_from_date(empty_db):
     db.save_item(item3)
     db.save_item(item4)
     db.save_item(item5)
-    binder = create_date_binder(offset=-6)
+    binder = db.create_date_binder(offset=-6)
     assert item3.identity in binder.members
     assert item4.identity in binder.members
     assert item5.identity in binder.members
@@ -91,8 +89,8 @@ def test_creating_binder_from_date(empty_db):
     item7.reschedule(str(date.today() + timedelta(days=203)))
     db.save_item(item6)
     db.save_item(item7)
-    binder = create_date_binder(date_from=str(date.today() - timedelta(days=200)),
-                                date_to=str(date.today() + timedelta(days=203)))
+    binder = db.create_date_binder(date_from=str(date.today() - timedelta(days=200)),
+                                   date_to=str(date.today() + timedelta(days=203)))
     assert item1.identity in binder.members
     assert item2.identity in binder.members
     assert item3.identity in binder.members
@@ -111,16 +109,16 @@ def test_creating_binder_from_tags(empty_db):
     db.save_item(item2)
     db.save_item(item3)
     db.save_item(item4)
-    binder = create_tag_binder('history')
+    binder = db.create_tag_binder('history')
     assert item1.identity in binder.members
     assert item2.identity in binder.members
     assert item4.identity in binder.members
     assert item3.identity not in binder.members
-    binder2 = create_tag_binder('south')
+    binder2 = db.create_tag_binder('south')
     assert item3.identity in binder2.members
     assert item4.identity in binder2.members
     assert item1.identity not in binder2.members
-    binder3 = create_tag_binder('west', 'history')
+    binder3 = db.create_tag_binder('west', 'history')
     assert item2.identity in binder3.members
 
 def test_creating_search_binder(empty_db):
@@ -133,7 +131,7 @@ def test_creating_search_binder(empty_db):
     db.save_item(item2)
     db.save_item(item3)
     db.save_item(item4)
-    binder = create_search_binder("桃花")
+    binder = db.create_search_binder("桃花")
     assert item1.identity in binder.members
     assert item2.identity not in binder.members
     assert len(binder.members) == 1
@@ -145,9 +143,9 @@ def test_creating_search_binder(empty_db):
     db.save_item(item6)
     db.save_item(item7)
     db.save_item(item8)
-    binder2 = create_search_binder('activity')
+    binder2 = db.create_search_binder('activity')
     assert len(binder2.members) == 4
-    binder3 = create_search_binder('programming')
+    binder3 = db.create_search_binder('programming')
     assert len(binder3.members) == 2
     assert item5.identity in binder3.members
     assert item6.identity in binder3.members
@@ -158,11 +156,11 @@ def test_sort_search_result_by_rank(empty_db):
     item2 = Item(content="bar bar bar bar bar woof woof foo foo foo")
     db.save_item(item1)
     db.save_item(item2)
-    binder = create_search_binder("foo")
+    binder = db.create_search_binder("foo")
     assert binder.members[0] == item1.identity
-    binder = create_search_binder("bar")
+    binder = db.create_search_binder("bar")
     assert binder.members[0] == item2.identity
-    binder = create_search_binder('foo', 'bar')
+    binder = db.create_search_binder('foo', 'bar')
     assert binder.members[0] == item2.identity
 
 def test_binder_rename():
@@ -171,7 +169,7 @@ def test_binder_rename():
     assert binder.name == 'binder'
     binder.rename('important matters')
     assert binder.name == 'important matters'
-    binder2 = create_date_binder()
+    binder2 = db.create_date_binder()
     binder2.rename('some thoughts')
     assert binder2.name == 'some thoughts'
     assert binder2.kind == 'adhoc'
