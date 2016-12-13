@@ -7,9 +7,10 @@ import parajumper.db as db
 def test_save_item(empty_db):
     """Test for saving item."""
     conf = DBConfig()
+    assert conf.database.name == 'test'
     item = Item(content="Test content", bullet=".", tags=['oper'])
     db.save_item(item)
-    assert conf.item_t.find_one({"content":"Test content"})['tags'] == ['oper'] is not None
+    assert conf.item_t.find_one({"content":"Test content"})['tags'] == ['oper']
 
 def test_load_item(empty_db):
     """Test for loading item."""
