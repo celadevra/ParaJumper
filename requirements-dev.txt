@@ -8,11 +8,11 @@ lazy-object-proxy==1.2.2
 mccabe==0.5.2
 msgpack-python==0.4.8
 neovim==0.1.11
+parajumper==0.0.1
 py==1.4.31
 pylint==1.6.4
 pymongo==3.4.0
 pytest==3.0.4
-pytest-env==0.6.0
 ruamel.yaml==0.13.4
 six==1.10.0
 wrapt==1.10.8
