@@ -23,19 +23,11 @@ def set_up():
                                     'location': 'mongodb://localhost:27017'}})
     print("Setting db to test")
     yield conf
-    conf.update_items({'database': {'db_name': 'pj',
-                                    'kind': 'mongodb',
-                                    'location': 'mongodb://localhost:27017'}})
-
-@pytest.fixture()
-def db_teardown():
-    """Restore db to production env."""
-    conf = Config()
+    Config()
     conf.update_items({'database': {'db_name': 'pj',
                                     'kind': 'mongodb',
                                     'location': 'mongodb://localhost:27017'}})
     print("Setting db to pj")
-    yield conf
 
 @pytest.fixture()
 def empty_db():
