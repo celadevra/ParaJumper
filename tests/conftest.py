@@ -2,8 +2,7 @@
 
 import os
 import pytest
-from parajumper.config import Config
-from parajumper.db import CLIENT
+from parajumper.config import Config, DBConfig
 
 @pytest.fixture(scope="module")
 def empty_config():
@@ -32,10 +31,7 @@ def set_up():
 @pytest.fixture()
 def empty_db():
     """empty test database."""
-    database = CLIENT['test']
-    items = database.items
-    items.drop()
-    binders = database.binders
-    binders.drop()
-    indices = database.indices
-    indices.drop()
+    conf = DBConfig()
+    conf.item_t.drop()
+    conf.binder_t.drop()
+    conf.index_t.drop()
