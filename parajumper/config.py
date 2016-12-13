@@ -11,6 +11,7 @@ If the file does not exist, a default config file is written.
 import os
 import ruamel
 from ruamel import yaml
+from pymongo import MongoClient
 
 DEFAULT_CONFIG_FILE = os.environ['HOME'] + '/.config/parajumper/config.yaml'
 
@@ -109,4 +110,25 @@ class Config():
         conf_f: file to write config to."""
         del self.options[k]
         self.save(conf_f)
+
+class DBConfig():
+    """Database Config.
+    kind: type of DB server: mongodb, dynamodb or sqlite.
+    conn: connection to DB.
+    database: database object.
+    item_t: table/collection for items.
+    binder_t: table/collection for binders.
+    index_t: table/collection for index."""
+    def __init__(self):
+        """Read database configs, return database client, database,
+        and tables in a dict."""
+        conf = Config()
+        self.kind = conf.options['database']['kind']
+        if self.kind == 'mongodb':
+            self.conn = MongoClient(conf.options['database']['location'])
+            self.database = self.conn[conf.options['database']['db_name']]
+            self.item_t = self.database.items
+            self.binder_t = self.database.binders
+            self.index_t = self.database.indices
+
     # TODO: need a method to quickly add new item type (bullets)

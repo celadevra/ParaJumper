@@ -1,19 +1,11 @@
 """module that interact with database. Currently interface with MongoDB is
 being implemented. Will support SQLite and Amazon DynamoDB in the future."""
 
-from pymongo import MongoClient, ASCENDING
-from parajumper.config import Config
+from pymongo import ASCENDING
+from parajumper.config import DBConfig
 from parajumper.item import Item, ITEMS_DICT
 from parajumper.binder import Binder, BINDERS_DICT
 from parajumper.indices import gen_index
-
-CONF = Config()
-if CONF.options['database']['kind'] == 'mongodb':
-    CLIENT = MongoClient(CONF.options['database']['location'])
-    DATABASE = CLIENT[CONF.options['database']['db_name']]
-    ITEM_T = DATABASE.items
-    BINDER_T = DATABASE.binders
-    INDEX_T = DATABASE.indices
 
 def save_item_mongodb(item, table=ITEM_T):
     """Save item to database. Return id of the corresponding record.
