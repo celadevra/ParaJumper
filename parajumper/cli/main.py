@@ -9,7 +9,7 @@ def main():
                      'reschedule', 'pin',
                      'tag', 'export',
                      'new', 'move', 'edit', 'del', 'delete']
-    args = Args()
+    args = Args().not_flags
     if len(args) == 0:
         args = Args(['today'])
     try:
@@ -20,6 +20,6 @@ def main():
     if command == 0: # help
         if (not args.has(1)) or (args.not_flags[1] not in commands_list):
             printhelp.default_help()
-            
+
 if __name__ == '__main__':
     main()
