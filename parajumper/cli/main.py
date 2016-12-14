@@ -3,6 +3,7 @@ from clint.arguments import Args
 from clint.textui import puts, colored
 import parajumper.cli.help as printhelp
 import parajumper.cli.today as today
+import parajumper.cli.new as new
 
 def main():
     """PJ's main entry function"""
@@ -23,6 +24,7 @@ def main():
             printhelp.default_help()
     if command == 1: # today
         today.show()
-
+    if command == 6: # new
+        new.newitem()
 if __name__ == '__main__':
     main()
