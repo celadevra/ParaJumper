@@ -1,7 +1,7 @@
 """Deal with 'today' command."""
 
 import datetime
-from clint.textui import puts
+from clint.textui import puts, colored
 from parajumper.db import create_date_binder, load_item
 
 def show():
@@ -14,6 +14,6 @@ def show():
     for member in binder.members:
         items.append(load_item(member))
     for item in items:
-        puts("[%2d]" % index)
-        print(item)
+        puts(colored.blue("[%2d]" % index))
+        print(item.__str__(verbose=0))
         index += 1
