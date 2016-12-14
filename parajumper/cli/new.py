@@ -27,8 +27,8 @@ def newitem():
 <!-- & history roman hannibal expected_in_test -->"""
     notes = ''
     tags = []
-    with tempfile.NamedTemporaryFile(suffix='.md') as tempf:
-        tempf.write(str.encode(initial_message))
+    with tempfile.NamedTemporaryFile(suffix='.md', mode='w+', encoding='utf-8') as tempf:
+        tempf.write(initial_message)
         tempf.flush()
         try:
             call([EDITOR, tempf.name])
@@ -37,11 +37,11 @@ def newitem():
 
         tempf.seek(0)
         for line in tempf:
-            if bytes.decode(line[:4]) != '<!--':
-                if bytes.decode(line[:2]) != '& ':
-                    notes += bytes.decode(line)
+            if line[:4] != '<!--':
+                if line[:2] != '& ':
+                    notes += line
                 else:
-                    tags = tags + [x for x in bytes.decode(line[2:-1]).split(' ') if x != '']
+                    tags = tags + [x for x in line[2:-1].split(' ') if x != '']
     result = item.Item(bullet=bullet, content=re.sub('\n+$', '\n', notes), tags=tags)
     db.save_item(result)
     puts("New item saved with id = %s" % colored.green(result.identity))
