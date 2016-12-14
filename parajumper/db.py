@@ -60,7 +60,8 @@ def save_binder_mongodb(binder):
             save_item(ITEMS_DICT[identity])
     if conf.binder_t.find_one({"identity": binder.identity}) is not None:
         for key in binder.__dict__:
-            conf.binder_t.update_one({"identity": binder.identity}, {"$set": {key: binder.__dict__[key]}})
+            conf.binder_t.update_one({"identity": binder.identity},
+                                     {"$set": {key: binder.__dict__[key]}})
     else:
         conf.binder_t.insert_one(binder.__dict__)
     return binder.identity
