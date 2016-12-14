@@ -12,7 +12,8 @@ def _print_members(items):
     res = ''
     index = 0
     for item in items:
-        res += '[' + index + ']\n' + str(item) + '\n\n'
+        res += '[' + str(index) + ']\n' + str(item) + '\n\n'
+        index += 1
     res = res[:-2] # remove trailing \n
     return res
 
