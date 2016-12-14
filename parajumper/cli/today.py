@@ -1,7 +1,7 @@
 """Deal with 'today' command."""
 
 import datetime
-from parajumper.binder import create_date_binder
+from parajumper.db import create_date_binder
 
 def show():
     """Show today's binder."""
