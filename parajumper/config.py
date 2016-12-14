@@ -18,9 +18,9 @@ DEFAULT_CONFIG_FILE = os.environ['HOME'] + '/.config/parajumper/config.yaml'
 CONF_DEFAULT = """author: Default ParaJumper
 name: My ParaJumper Note
 bullets:
-    - '.': todo
-    - 'o': event
-    - '1': notes
+    '.': todo
+    'o': event
+    '-': notes
 database:
 #    kind: sqlite
 #    location: ~/.local/share/parajumper/notes.db

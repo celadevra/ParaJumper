@@ -26,11 +26,7 @@ def _get_item_kind(bullet):
             return 'notes' # numbered bullets are notes
     except ValueError:
         pass
-    bullet_table = conf.options['bullets']
-    bullet_dict = dict()
-    for elem in bullet_table:
-        pair = elem.popitem()
-        bullet_dict[pair[0]] = pair[1]
+    bullet_dict = conf.options['bullets']
     return bullet_dict.get(bullet, 'default')
 
 def _process_tags(args):
