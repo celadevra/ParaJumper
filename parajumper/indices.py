@@ -15,6 +15,7 @@ def _get_freq(word_list):
 def gen_index(identity, text):
     """Generate a content index for item with id = identity."""
     conf = parajumper.config.DBConfig()
+    jieba.setLogLevel(60)
     words = [w for w in jieba.cut_for_search(text.lower()) if w != " "]
     word_freq = _get_freq(words)
     result = []
