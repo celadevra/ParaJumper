@@ -19,7 +19,7 @@ def test_create_binder():
 def test_show_binder():
     """Test printing binder content."""
     binder = Binder()
-    assert str(binder) == '%s binder: %s\n\n' % (binder.kind, binder.name)
+    assert str(binder) == '%s binder: %s\n' % (binder.kind, binder.name)
 
 def test_add_member():
     """Test for adding member(s) to binder."""
