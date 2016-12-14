@@ -12,6 +12,7 @@ The contents are Markdown text."""
 import uuid
 import re
 from datetime import date
+from clint.textui import colored, indent
 from parajumper.config import Config
 
 ITEMS_DICT = dict()
@@ -98,12 +99,32 @@ class Item():
         self.identity = str(uuid.uuid4())
         ITEMS_DICT[self.identity] = self
 
-    def __str__(self):
-        """Show item in text format."""
-        return "%s %s\ntags: %s\nScheduled: %s by %s\n" % (
-            self.bullet,
-            self.content, _show_tags(self.tags),
-            self.schedule, self.author)
+    def __str__(self, verbose=1):
+        """Show item in text format.
+        Verbosity settings:
+        0: bullet and content, default in 'today' view.
+        1: bullet, content and tags (default).
+        2: bullet, content, tags, schedule date and author.
+        3: Everything, including id."""
+        if verbose == 0:
+            return "%s %s" % (colored.magenta(self.bullet), self.content)
+        elif verbose == 2:
+            return "%s %s\n  %s\n  S: %s  BY: %s" % (colored.magenta(self.bullet),
+                                                     self.content,
+                                                     _show_tags(self.tags),
+                                                     colored.red(self.schedule),
+                                                     colored.yellow(self.author))
+        elif verbose == 3:
+            return "%s %s\n  %s\n  S: %s  BY: %s\n  id: %s" % (colored.magenta(self.bullet),
+                                                               self.content,
+                                                               _show_tags(self.tags),
+                                                               colored.red(self.schedule),
+                                                               colored.yellow(self.author),
+                                                               colored.green(self.identity))
+        else:
+            return "%s %s\ntags: %s\nScheduled: %s by %s\n" % (self.bullet,
+                                                               self.content, _show_tags(self.tags),
+                                                               self.schedule, self.author)
 
     def show_detail(self):
         """Show item in text format, more detailed than __str__. Mainly
