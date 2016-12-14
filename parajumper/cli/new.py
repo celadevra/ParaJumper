@@ -2,8 +2,8 @@
 
 import tempfile
 import os
+import re
 from subprocess import call
-from itertools import islice
 from clint.textui import prompt, puts, indent, colored
 import parajumper.item as item
 import parajumper.config as config
@@ -42,6 +42,6 @@ def newitem():
                     notes += bytes.decode(line)
                 else:
                     tags = tags + [x for x in bytes.decode(line[2:-1]).split(' ') if x != '']
-    result = item.Item(bullet=bullet, content=notes, tags=tags)
+    result = item.Item(bullet=bullet, content=re.sub('\n+$', '\n', notes), tags=tags)
     db.save_item(result)
     puts("New item saved with id = %s" % colored.green(result.identity))
