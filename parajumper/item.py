@@ -109,18 +109,19 @@ class Item():
         if verbose == 0:
             return "%s %s" % (colored.magenta(self.bullet), self.content)
         elif verbose == 2:
-            return "%s %s\n  %s\n  S: %s  BY: %s" % (colored.magenta(self.bullet),
-                                                     self.content,
-                                                     _show_tags(self.tags),
-                                                     colored.red(self.schedule),
-                                                     colored.yellow(self.author))
+            return "%s %s\n  %s\n  S: %s  BY: %s\n" % (colored.magenta(self.bullet),
+                                                       self.content,
+                                                       _show_tags(self.tags),
+                                                       colored.red(self.schedule),
+                                                       colored.yellow(self.author))
         elif verbose == 3:
-            return "%s %s\n  %s\n  S: %s  BY: %s\n  id: %s" % (colored.magenta(self.bullet),
-                                                               self.content,
-                                                               _show_tags(self.tags),
-                                                               colored.red(self.schedule),
-                                                               colored.yellow(self.author),
-                                                               colored.green(self.identity))
+            return "%s (%s) %s\n  %s\n  S: %s  BY: %s\n  id: %s\n" % (colored.magenta(self.bullet),
+                                                                      self.kind,
+                                                                      self.content,
+                                                                      _show_tags(self.tags),
+                                                                      colored.red(self.schedule),
+                                                                      colored.yellow(self.author),
+                                                                      colored.green(self.identity))
         else:
             return "%s %s\ntags: %s\nScheduled: %s by %s\n" % (self.bullet,
                                                                self.content, _show_tags(self.tags),
@@ -129,14 +130,7 @@ class Item():
     def show_detail(self):
         """Show item in text format, more detailed than __str__. Mainly
         for debugging"""
-        return "%s %s\ntags: %s\nScheduled: %s by %s\nkind: %s\nid: %s\n" % (
-            self.bullet,
-            self.content,
-            _show_tags(self.tags),
-            self.schedule,
-            self.author,
-            self.kind,
-            self.identity)
+        return self.__str__(verbose=3)
 
     def update(self, bullet=None, content=None, tags=None):
         """Change the calling item and update timestamp."""

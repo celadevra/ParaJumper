@@ -27,7 +27,7 @@ def test_show_item_details():
     """test showing item with all its relevant information."""
     conf = Config()
     new_item = Item(bullet='.', content='Milk', tags='grocery')
-    assert new_item.show_detail() == ". Milk\ntags: grocery\nScheduled: %s by %s\nkind: %s\nid: %s\n" % (str(datetime.date.today()), conf.options['author'], new_item.kind, new_item.identity)
+    assert new_item.show_detail() == ". (%s) Milk\n  grocery\n  S: %s  BY: %s\n  id: %s\n" % (new_item.kind, str(datetime.date.today()), conf.options['author'], new_item.identity)
 
 def test_update_item():
     """test if items whose attributes are changed have different timestamp."""
