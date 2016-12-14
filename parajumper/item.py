@@ -12,7 +12,7 @@ The contents are Markdown text."""
 import uuid
 import re
 from datetime import date
-from clint.textui import colored, indent
+from clint.textui import colored
 from parajumper.config import Config
 
 ITEMS_DICT = dict()
