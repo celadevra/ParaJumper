@@ -1,8 +1,8 @@
 """Binders: collection of items."""
 
 import uuid
-from datetime import date, datetime, timedelta
 from random import shuffle
+from clint.textui import colored
 
 BINDERS_DICT = dict()
 
@@ -47,7 +47,7 @@ class Binder():
 
     def __str__(self):
         """Text representation of binder."""
-        return "%s binder: %s\n" % (self.kind, self.name)
+        return "%s binder: %s\n" % (colored.green(self.kind), colored.yellow(self.name))
 
     def add_members(self, *items):
         """add items to binder.
