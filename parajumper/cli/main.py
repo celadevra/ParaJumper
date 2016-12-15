@@ -7,11 +7,11 @@ import parajumper.cli.new as new
 
 def main():
     """PJ's main entry function"""
-    commands_list = ['help', 'today',
+    commands_list = ['-h', '--help', 'help', 'today',
                      'reschedule', 'pin',
                      'tag', 'export',
                      'new', 'move', 'edit', 'del', 'delete']
-    args = Args().not_flags
+    args = Args()
     if len(args) == 0:
         args = Args(['today'])
     try:
@@ -19,12 +19,12 @@ def main():
     except ValueError:
         command = 0
         puts(colored.red("Unknown command: %s" % args[0]))
-    if command == 0: # help
+    if command <= 2: # help
         if (not args.has(1)) or (args.not_flags[1] not in commands_list):
             printhelp.default_help()
-    if command == 1: # today
+    if command == 3: # today
         today.show()
-    if command == 6: # new
+    if command == 8: # new
         new.newitem()
 if __name__ == '__main__':
     main()
