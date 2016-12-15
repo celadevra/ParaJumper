@@ -23,8 +23,9 @@ def main():
         if (not args.has(1)) or (args.not_flags[1] not in commands_list):
             printhelp.default_help()
     if command == 3: # today
-        today.show()
+        today.dispatch(args)
     if command == 8: # new
         new.newitem()
+
 if __name__ == '__main__':
     main()
