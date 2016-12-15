@@ -11,6 +11,11 @@ import parajumper.db as db
 
 EDITOR = os.environ.get('EDITOR', 'vim')
 
+def dispatch(args):
+    """Dispatcher for new command."""
+    if not args.flags.has(0):
+        newitem()
+
 def newitem():
     """Create new item by calling default $EDITOR, read in user input, and parse content."""
     conf = config.Config()

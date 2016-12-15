@@ -24,7 +24,7 @@ def main():
     if command == 3: # today
         today.dispatch(args)
     if command == 8: # new
-        new.newitem()
+        new.dispatch(args)
 
 if __name__ == '__main__':
     main()
