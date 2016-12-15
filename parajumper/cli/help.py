@@ -40,7 +40,10 @@ def today_help():
 
 def new_help():
     """Help messages for new command."""
-    puts("Usage: pj new")
+    puts("Usage: pj new [-T <tag1,tag2,...>] [-t/-e/-n <content>]")
     puts("")
     puts("Create new entry. By default schedule to current day.")
     puts("Interactive editing needs your $EDITOR or vi to be available.")
+    puts("pj new -T specifies tags for item being created.")
+    puts("pj new -t/-e/-n creates notes from following quoted text.")
+    puts("-T and -t/-e/-n can be used together.")
