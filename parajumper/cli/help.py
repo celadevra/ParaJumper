@@ -28,15 +28,15 @@ def default_help():
     with indent(6):
         puts("Create new items and binders.")
     with indent(4):
-        puts(colored.yellow("today"))
+        puts(colored.yellow("day"))
     with indent(6):
-        puts("Default command. Show today's binder.")
+        puts("Default command. Show today's binder by default.")
 
-def today_help():
-    """Help messages for today command."""
-    puts("Usage: pj today [-v/-vv/-vvv]")
+def day_help():
+    """Help messages for day command."""
+    puts("Usage: pj day [-v/-vv/-vvv]")
     puts("")
-    puts("Show today's items. -v/-vv/-vvv for showing more attributes of the item.")
+    puts("Show the day's items. -v/-vv/-vvv for showing more attributes of the item.")
 
 def new_help():
     """Help messages for new command."""

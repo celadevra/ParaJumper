@@ -5,7 +5,7 @@ import parajumper.cli.help as printhelp
 import parajumper.cli.today as today
 import parajumper.cli.new as new
 
-COMMANDS_LIST = ['-h', '--help', 'help', 'today',
+COMMANDS_LIST = ['-h', '--help', 'help', 'day',
                  'reschedule', 'pin',
                  'tag', 'export',
                  'new', 'move', 'edit', 'del', 'delete']
@@ -13,7 +13,7 @@ def main():
     """PJ's main entry function"""
     args = Args()
     if len(args) == 0:
-        args = Args(['today'])
+        args = Args(['day'])
     try:
         command = COMMANDS_LIST.index(args[0])
     except ValueError:
@@ -21,7 +21,7 @@ def main():
         puts(colored.red("Unknown command: %s" % args[0]))
     if command <= 2: # help
         printhelp.dispatch(args, COMMANDS_LIST)
-    if command == 3: # today
+    if command == 3: # day
         today.dispatch(args)
     if command == 8: # new
         new.dispatch(args)

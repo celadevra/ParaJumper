@@ -1,4 +1,4 @@
-"""Deal with 'today' command."""
+"""Deal with 'day' command."""
 
 import datetime
 from clint.textui import puts, colored
@@ -15,10 +15,11 @@ def dispatch(args):
         v_level = 3
     return show(v_level)
 
-def show(level=0):
+def show(level=0, today=True, date_from=None, date_to=None, ago=None):
     """Show today's binder."""
-    today = str(datetime.date.today())
-    binder = create_date_binder(today)
+    if today:
+        today = str(datetime.date.today())
+        binder = create_date_binder(today)
     print(binder)
     items = []
     index = 0
