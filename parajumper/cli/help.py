@@ -34,9 +34,12 @@ def default_help():
 
 def day_help():
     """Help messages for day command."""
-    puts("Usage: pj day [-v/-vv/-vvv]")
+    puts("Usage: pj day [-v/-vv/-vvv] [-df] [-dt] [-da]")
     puts("")
     puts("Show the day's items. -v/-vv/-vvv for showing more attributes of the item.")
+    puts("-df <YYYY-MM-DD> to specify starting date.")
+    puts("-dt <YYYY-MM-DD> to specify ending date.")
+    puts("-da <N> to specify how many days ago or in the future.")
 
 def new_help():
     """Help messages for new command."""
