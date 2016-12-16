@@ -187,7 +187,7 @@ def create_date_binder(date_from=None, offset=None, date_to=None):
     if offset is None:
         if date_to is None:
             offset = 0
-            date_to = date_from
+            date_to = str(date.today())
     else:
         date_to = str((datetime.strptime(date_from, "%Y-%m-%d") + timedelta(days=offset)).date())
     result = Binder(name=date_from+'~'+date_to, kind='date')
