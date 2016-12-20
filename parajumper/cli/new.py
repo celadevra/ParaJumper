@@ -15,6 +15,8 @@ def dispatch(args):
     """Dispatcher for new command."""
     if '-T' in args:
         tags = args.value_after('-T').split(',')
+    else:
+        tags = None
     if not args.flags.has(0):
         newitem()
     elif '-t' in args:
