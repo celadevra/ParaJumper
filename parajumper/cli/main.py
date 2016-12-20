@@ -4,8 +4,10 @@ from clint.textui import puts, colored
 import parajumper.cli.help as printhelp
 import parajumper.cli.today as today
 import parajumper.cli.new as new
+import parajumper.cli.tag as tag
+import parajumper.cli.tagged as tagged
 
-COMMANDS_LIST = ['-h', '--help', 'help', 'day',
+COMMANDS_LIST = ['-h', '--help', 'help', 'day', 'tagged',
                  'reschedule', 'pin',
                  'tag', 'export',
                  'new', 'move', 'edit', 'del', 'delete']
@@ -23,8 +25,12 @@ def main():
         printhelp.dispatch(args, COMMANDS_LIST)
     if command == 3: # day
         today.dispatch(args)
-    if command == 8: # new
+    if command == 4: # tagged
+        tagged.dispatch(args)
+    if command == 9: # new
         new.dispatch(args)
+    if command == 7: # tag
+        tag.dispatch(args)
 
 if __name__ == '__main__':
     main()
