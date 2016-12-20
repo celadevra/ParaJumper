@@ -43,21 +43,23 @@ def newitem(tags=None):
     notes = ''
     if tags is None:
         tags = []
-    with tempfile.NamedTemporaryFile(suffix='.md', mode='w+', encoding='utf-8') as tempf:
-        tempf.write(initial_message)
-        tempf.flush()
-        try:
-            call([EDITOR, tempf.name])
-        except FileNotFoundError:
-            call(['vi', tempf.name])
+    tempf = tempfile.NamedTemporaryFile(suffix='.md', mode='w+', encoding='utf-8', delete=False)
+    tempf.write(initial_message)
+    tempf.flush()
+    try:
+        call([EDITOR, tempf.name])
+    except FileNotFoundError:
+        call(['vi', tempf.name])
+    tempf.close()
 
-        tempf.seek(0)
+    with open(tempf.name) as tempf:
         for line in tempf:
             if line[:4] != '<!--':
                 if line[:2] != '& ':
                     notes += line
                 else:
                     tags = tags + [x for x in line[2:-1].split(' ') if x != '']
+    os.remove(tempf.name)
     result = item.Item(bullet=bullet, content=re.sub('\n+$', '\n', notes), tags=tags)
     db.save_item(result)
     puts("New item saved with id = %s" % colored.green(result.identity))
