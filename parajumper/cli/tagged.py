@@ -1,5 +1,6 @@
 """Handle search with tags."""
-import parajumper.db as db
+from clint.textui import puts, colored
+from parajumper.db import create_tag_binder, load_item
 
 def dispatch(args):
     """Dispatcher for tagged command."""
@@ -8,9 +9,9 @@ def dispatch(args):
     verbosity = args.value_after('-v')
     tagged_binder(verbosity, *tags)
 
-def tagged_binder(verbosity=0, *tags):
+def tagged_binder(level=0, *tags):
     """Generate and show binder populated with items with any of the tags."""
-    binder = db.create_tag_binder(tags)
+    binder = create_tag_binder(tags)
     print(binder)
     items = []
     index = 0
