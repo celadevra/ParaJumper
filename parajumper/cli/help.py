@@ -57,6 +57,14 @@ def new_help():
 
 def tagged_help():
     """Help messages for tagged command."""
-    puts("Usage: pj tagged <tag1,tag2,...>")
+    puts("Usage: pj tagged <tag1,tag2,...> [-v N]")
     puts("")
     puts("Find items with any of the tags in 'tag1', 'tag2', ....")
+    puts("-v specifies verbosity, N = 0, 1, 2, or 3.")
+
+def search_help():
+    """Help messages for search command."""
+    puts("Usage: pj search <search terms> [-v N]")
+    puts("")
+    puts("Find items with search terms.")
+    puts("-v specifies verbosity, N = 0, 1, 2, or 3.")
