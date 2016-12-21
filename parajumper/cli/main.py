@@ -4,13 +4,13 @@ from clint.textui import puts, colored
 import parajumper.cli.help as printhelp
 import parajumper.cli.today as today
 import parajumper.cli.new as new
-import parajumper.cli.tag as tag
+import parajumper.cli.search as search
 import parajumper.cli.tagged as tagged
 
 COMMANDS_LIST = ['-h', '--help', 'help', 'day', 'tagged',
-                 'reschedule', 'pin',
+                 'search', 'new', 'reschedule', 'pin',
                  'tag', 'export',
-                 'new', 'move', 'edit', 'del', 'delete']
+                 'move', 'edit', 'del', 'delete']
 def main():
     """PJ's main entry function"""
     args = Args()
@@ -27,10 +27,10 @@ def main():
         today.dispatch(args)
     if command == 4: # tagged
         tagged.dispatch(args)
-    if command == 9: # new
+    if command == 5: # search
+        search.dispatch(args)
+    if command == 6: # new
         new.dispatch(args)
-    if command == 7: # tag
-        tag.dispatch(args)
 
 if __name__ == '__main__':
     main()
