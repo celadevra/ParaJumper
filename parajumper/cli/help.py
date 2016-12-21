@@ -31,6 +31,10 @@ def default_help():
         puts(colored.yellow("day"))
     with indent(6):
         puts("Default command. Show today's binder by default.")
+    with indent(4):
+        puts(colored.yellow("tagged"))
+    with indent(6):
+        puts("Show items with supplied tags.")
 
 def day_help():
     """Help messages for day command."""
@@ -50,3 +54,9 @@ def new_help():
     puts("pj new -T specifies tags for item being created.")
     puts("pj new -t/-e/-n creates notes from following quoted text.")
     puts("-T and -t/-e/-n can be used together.")
+
+def tagged_help():
+    """Help messages for tagged command."""
+    puts("Usage: pj tagged <tag1,tag2,...>")
+    puts("")
+    puts("Find items with any of the tags in 'tag1', 'tag2', ....")
