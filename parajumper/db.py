@@ -46,6 +46,7 @@ def remove_item_mongodb(record_id):
     database: database object."""
     conf = DBConfig()
     conf.item_t.remove({"identity": record_id})
+    conf.index_t.remove({"identity": record_id})
     ITEMS_DICT.pop(record_id, None)
 
 def save_binder_mongodb(binder):
