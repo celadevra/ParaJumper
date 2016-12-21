@@ -4,7 +4,7 @@ from parajumper.db import create_tag_binder, load_item
 
 def dispatch(args):
     """Dispatcher for tagged command."""
-    args.remove('tagged') 
+    args.remove('tagged')
     tags = args.not_flags.all
     verbosity = args.value_after('-v')
     tagged_binder(verbosity, *tags)
