@@ -35,6 +35,10 @@ def default_help():
         puts(colored.yellow("tagged"))
     with indent(6):
         puts("Show items with supplied tags.")
+    with indent(4):
+        puts(colored.yellow("search"))
+    with indent(6):
+        puts("Search items with certain keywords.")
 
 def day_help():
     """Help messages for day command."""
