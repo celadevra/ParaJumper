@@ -8,9 +8,7 @@ import parajumper.cli.search as search
 import parajumper.cli.tagged as tagged
 
 COMMANDS_LIST = ['-h', '--help', 'help', 'day', 'tagged',
-                 'search', 'new', 'reschedule', 'pin',
-                 'tag', 'export',
-                 'move', 'edit', 'del', 'delete']
+                 'search', 'new']
 def main():
     """PJ's main entry function"""
     args = Args()
