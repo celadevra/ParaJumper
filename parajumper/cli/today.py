@@ -36,6 +36,11 @@ def dispatch(args):
     if '-E' in args.flags:
         index = args.value_after('-E')
         return edit_item(index, today, date_from, date_to, ago)
+    if '-G' in args.flags:
+        index = args.value_after('-G')
+        argi = args.all.index('-G') + 2
+        tags = args.all[argi:]
+        return tag_item(index, tags, today, date_from, date_to, ago)
     return show(v_level, today, date_from, date_to, ago)
 
 def show(level=0, today=True, date_from=None, date_to=None, ago=None):
@@ -120,3 +125,30 @@ def edit_item(index, today=True, date_from=None, date_to=None, ago=None):
     item.update(content=notes, tags=tags)
     save_item(item)
     show(level=0, today=today, date_from=date_from, date_to=date_to, ago=ago)
+
+def tag_item(index, tags, today=True, date_from=None, date_to=None, ago=None):
+    """Add tag to item."""
+    index = int(index)
+    if today:
+        today = str(datetime.date.today())
+        binder = create_date_binder(today)
+    if (date_from is not None) or (date_to is not None):
+        if ago is not None:
+            binder = create_date_binder(date_from=date_from, offset=int(ago), date_to=date_to)
+        else:
+            binder = create_date_binder(date_from=date_from, offset=None, date_to=date_to)
+
+    identity = binder.members[index]
+    item = load_item(identity)
+    item_tags = list(item.tags)
+    for tag in tags:
+        if tag[0] == '-':
+            item_tags.remove(tag[1:])
+        elif tag[0] == '+':
+            item_tags.append(tag[1:])
+        else:
+            item_tags.append(tag)
+    item.tags = list(set(item_tags))
+
+    save_item(item)
+    show(level=1, today=today, date_from=date_from, date_to=date_to, ago=ago)
